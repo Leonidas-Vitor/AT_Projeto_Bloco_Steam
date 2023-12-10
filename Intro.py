@@ -26,7 +26,7 @@ html_p = """<p style='text-align: center; font-size:%spx;'><b>%s</b></p>"""
 
 st.markdown('''<h1 style='text-align: center; '><b>INSTITUTO INFNET</b></h1>''',unsafe_allow_html = True)
 st.markdown(html_p % tuple([35,"ESCOLA SUPERIOR DE TECNOLOGIA"]),unsafe_allow_html=True)
-st.markdown(html_p % tuple([35,"TP9 - Projeto de Bloco"]),unsafe_allow_html=True)
+st.markdown(html_p % tuple([35,"AT - Projeto de Bloco II"]),unsafe_allow_html=True)
 st.divider()
 
 github_link = '''https://github.com/Leonidas-Vitor/Steam_Scrapper.git'''
