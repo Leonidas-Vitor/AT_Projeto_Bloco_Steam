@@ -6,7 +6,7 @@ import streamlit as st
 import os
 import StreamlitCustomLibrary as at_lib
 
-at_lib.set_page_config()
+#at_lib.set_page_config()
 at.SetTheme()
 
 st.text(__file__)
