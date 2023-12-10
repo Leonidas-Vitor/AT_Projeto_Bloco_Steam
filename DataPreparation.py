@@ -113,11 +113,11 @@ with cols[0]:
     Jogos não lançados não podem ser analisados, pois ainda não foram comercializados
     '''),unsafe_allow_html=True)
 with cols[2]:
-    notLaunched = df_redux[(df_redux['release_date'].str['coming_soon'] == True)]['steam_appid'].count()
+    notLaunched = df_redux[(df_redux['release_date'].str['coming_soon'] == True) | (df_redux['release_date'].str['date'] == '')]['steam_appid'].count()
     notLaunchedPercent = (notLaunched/df_redux['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{notLaunched}', delta=f'-{notLaunchedPercent:.2f}%')
 
-df_redux = df_redux[(df_redux['release_date'].str['coming_soon'] == False)]
+df_redux = df_redux[(df_redux['release_date'].str['coming_soon'] == False) & (df_redux['release_date'].str['date'] != '']
 
 st.divider()
 cols = st.columns([0.5,0.2,0.3])
@@ -474,8 +474,8 @@ st.dataframe(df_redux,hide_index=True,height=250)
 
 st.table(df_redux.set_index('id').describe())
 
-st.dataframe(df_redux[df_redux['release_date'].isna()],use_container_width=True)
-st.text(df_redux[df_redux['release_date'].isna()]['release_date'].count())
+#st.dataframe(df_redux[df_redux['release_date'].isna()],use_container_width=True)
+#st.text(df_redux[df_redux['release_date'].isna()]['release_date'].count())
 
 #cols = st.columns(len(df_redux.columns))
 #for col in cols:
