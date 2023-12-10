@@ -9,19 +9,19 @@ import StreamlitCustomLibrary as at_lib
 at_lib.SetPageConfig()
 at_lib.SetTheme()
 
-st.text(__file__)
+#st.text(__file__)
     
 #add_page_title()
-#show_pages(
-#    [
-#        Page('Capa.py','Introdução',":memo:"),
+show_pages(
+    [
+        Page('Intro.py','Introdução',":memo:"),
 #        #Page('Page_0.py','Sobre a aplicação',":building_construction:"),
 #        Page('Page_1.py','Aquisição de dados',":building_construction:"),
 #        Page('Page_2.py','Conhecendo a base de dados',":card_file_box:"),
 #        Page('Page_3.py','Preparação dos dados',":wrench:"),
 #        Page('Page_5.py','Regressão linear',":bulb:"),
-#    ]
-#)
+    ]
+)
 
 html_p = """<p style='text-align: center; font-size:%spx;'><b>%s</b></p>"""
 
