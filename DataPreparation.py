@@ -129,11 +129,11 @@ with cols[0]:
     em outro momento se for necessário é possível obter as tags diretamente na página do jogos na loja Steam.
     '''),unsafe_allow_html=True)
 with cols[2]:
-    noTag = df_redux[df_redux['tags'].str == []]['steam_appid'].count()
+    noTag = df_redux[df_redux['tags'].apply(lambda x: len(ast.literal_eval(x)) == 0)]['steam_appid'].count()
     notTagPercent = (noTag/df_redux['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{noTag}', delta=f'-{notTagPercent:.2f}%')
 
-df_redux = df_redux[df_redux['tags'].str != []]
+df_redux = df_redux[df_redux['tags'].apply(lambda x: len(ast.literal_eval(x)) > 0)]
 
 
 st.divider()
