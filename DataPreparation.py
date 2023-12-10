@@ -307,7 +307,8 @@ with columns[0]:
     st.dataframe(df_redux['release_date'].head(50),use_container_width=True)
 
 df_redux['release_date'] = pd.to_datetime(df_redux['release_date'].str['date'].apply(lambda d: np.nan if len(d) == 0 else d[:3] + ' 15, ' + d[4:8] if len(d) <= 8  else d))
-df_redux['release_date'].dropna(inplace=True)
+df_redux.dropna(inplace=True,subset='release_date')
+#df_redux['release_date'].dropna(inplace=True)
 
 with columns[1]:
     st.dataframe(df_redux['release_date'].head(50),use_container_width=True)
