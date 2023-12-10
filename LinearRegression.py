@@ -26,12 +26,13 @@ st.header('Regressão linear',divider=True)
 
 df_redux = pd.read_csv('SteamDatasetForStreamlitClean.csv',engine='pyarrow')
 
-with st.expander('Dataset não filtrado'):
-    st.markdown(at_lib.GetBasicTextMarkdown(20,
-        f'''
-        O dataset atualmente possui {df_redux.shape[0]} linhas e {df_redux.shape[1]} colunas.
-        '''),unsafe_allow_html=True)
-        st.dataframe(df_redux,hide_index=True,height=250)
+#with st.expander('Dataset não filtrado'):
+st.markdown(at_lib.GetBasicTextMarkdown(20,
+    f'''
+    O dataset atualmente possui {df_redux.shape[0]} linhas e {df_redux.shape[1]} colunas.
+    '''),unsafe_allow_html=True)
+    
+st.dataframe(df_redux,hide_index=True,height=250)
 
 df_redux['positive_reviews_percent'].fillna(0,inplace=True)
 df_redux.dropna(inplace=True,subset='commercialization_days')
