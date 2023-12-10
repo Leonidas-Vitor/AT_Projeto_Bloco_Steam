@@ -364,6 +364,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 
 df_redux['total_reviews'] = df_redux['positive'].copy() + df_redux['negative'].copy()
 df_redux['positive_reviews_percent'] = df_redux['positive'].copy()/df_redux['total_reviews']
+df_redux['positive_reviews_percent'].fillna(0,inplace=True)
 
 st.dataframe(df_redux[['name','total_reviews','positive_reviews_percent']].sample(5),use_container_width=True)
 #----------- Línguas suportadas
@@ -469,7 +470,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 
 st.dataframe(df_redux,hide_index=True,height=250)
 
-st.table(df_redux.describe())
+st.table(df_redux.set_index('id').describe())
 
 #cols = st.columns(len(df_redux.columns))
 #for col in cols:
