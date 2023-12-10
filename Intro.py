@@ -4,38 +4,24 @@ import matplotlib.pyplot as plt
 from st_pages import Page, show_pages, add_page_title
 import streamlit as st
 import os
+import StreamlitCustomLibrary as at_lib
 
-def SetPageConfig(title='AT'):
-    st.set_page_config(
-        #page_title=title,
-        layout="wide")
 
-SetPageConfig()
+at_lib.set_page_config()
+at.SetTheme()
 
-def SetTheme():
-    if 'sb_theme' not in st.session_state:
-        with open('seabornTheme.json', 'r') as j:
-            st.session_state['sb_theme'] = json.load(j)
-    sb.set_theme(palette= st.session_state['sb_theme']['palette'],style= st.session_state['sb_theme']['style'])
-    plt.rcParams.update(st.session_state['sb_theme']['plt_rcParams'])
-
-SetTheme()
-
-def GetBasicTextMarkdown(font_size: float, text: str, align = 'center'):
-    return f"""<p style='text-align: {align}; font-size:{font_size}px;'><b>{text}</b></p>"""
     
 #add_page_title()
-show_pages(
-    [
-        Page('Capa.py','Introdução',":memo:"),
-        #Page('Page_0.py','Sobre a aplicação',":building_construction:"),
-        Page('Page_1.py','Aquisição de dados',":building_construction:"),
-        Page('Page_2.py','Conhecendo a base de dados',":card_file_box:"),
-        Page('Page_3.py','Preparação dos dados',":wrench:"),
-        Page('Page_5.py','Regressão linear',":bulb:"),
-    ]
-)
-
+#show_pages(
+#    [
+#        Page('Capa.py','Introdução',":memo:"),
+#        #Page('Page_0.py','Sobre a aplicação',":building_construction:"),
+#        Page('Page_1.py','Aquisição de dados',":building_construction:"),
+#        Page('Page_2.py','Conhecendo a base de dados',":card_file_box:"),
+#        Page('Page_3.py','Preparação dos dados',":wrench:"),
+#        Page('Page_5.py','Regressão linear',":bulb:"),
+#    ]
+#)
 
 html_p = """<p style='text-align: center; font-size:%spx;'><b>%s</b></p>"""
 
