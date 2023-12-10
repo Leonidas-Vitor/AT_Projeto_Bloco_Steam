@@ -7,7 +7,7 @@ import os
 import StreamlitCustomLibrary as at_lib
 
 #at_lib.set_page_config()
-at.SetTheme()
+at_lib.SetTheme()
 
 st.text(__file__)
     
