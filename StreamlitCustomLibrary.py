@@ -6,8 +6,10 @@ import pandas as pd
 
 def SetPageConfig(title='AT'):
     st.set_page_config(
-        #page_title=title,
-        layout="wide")
+        page_title=title,
+        page_icon="🧊",
+        layout="wide",
+        initial_sidebar_state = "expanded")
 
 def SetTheme():
     if 'sb_theme' not in st.session_state:
