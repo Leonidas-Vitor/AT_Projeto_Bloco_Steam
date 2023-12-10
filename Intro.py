@@ -17,7 +17,7 @@ show_pages(
 #        #Page('Page_0.py','Sobre a aplicação',":building_construction:"),
 #        Page('Page_1.py','Aquisição de dados',":building_construction:"),
         Page('DataInspection.py','Conhecendo a base de dados',":mag:"),
-#        Page('Page_3.py','Preparação dos dados',":wrench:"),
+        Page('DataPreparation.py','Preparação dos dados',":wrench:"),
 #        Page('Page_5.py','Regressão linear',":bulb:"),
     ]
 )
