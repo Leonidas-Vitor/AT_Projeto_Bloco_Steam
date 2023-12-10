@@ -3,7 +3,6 @@ import json
 import matplotlib.pyplot as plt
 from st_pages import Page, show_pages, add_page_title
 import streamlit as st
-import os
 import StreamlitCustomLibrary as at_lib
 
 at_lib.SetPageConfig()
@@ -17,7 +16,7 @@ show_pages(
         Page('Intro.py','Introdução',":memo:"),
 #        #Page('Page_0.py','Sobre a aplicação',":building_construction:"),
 #        Page('Page_1.py','Aquisição de dados',":building_construction:"),
-#        Page('Page_2.py','Conhecendo a base de dados',":card_file_box:"),
+        Page('DataInspection.py','Conhecendo a base de dados',":mag:"),
 #        Page('Page_3.py','Preparação dos dados',":wrench:"),
 #        Page('Page_5.py','Regressão linear',":bulb:"),
     ]
