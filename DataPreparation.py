@@ -473,6 +473,8 @@ st.dataframe(df_redux,hide_index=True,height=250)
 
 st.table(df_redux.set_index('id').describe())
 
+st.text(df_redux[df_redux['release_date_converted'].isna()]['release_date'].count())
+
 #cols = st.columns(len(df_redux.columns))
 #for col in cols:
 #    with col:
