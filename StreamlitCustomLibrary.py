@@ -4,10 +4,10 @@ import seaborn as sb
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def SetPageConfig(title='AT'):
+def SetPageConfig(title='AT-Projeto-Bloco-II'):
     st.set_page_config(
         page_title=title,
-        page_icon="🧊",
+        page_icon="Infnet_logo.png",
         layout="wide",
         initial_sidebar_state = "expanded")
 
