@@ -31,6 +31,7 @@ with st.expander('Dataset não filtrado'):
         f'''
         O dataset atualmente possui {df_redux.shape[0]} linhas e {df_redux.shape[1]} colunas.
         '''),unsafe_allow_html=True)
+        st.dataframe(df_redux,hide_index=True,height=250)
 
 df_redux['positive_reviews_percent'].fillna(0,inplace=True)
 df_redux.dropna(inplace=True,subset='commercialization_days')
