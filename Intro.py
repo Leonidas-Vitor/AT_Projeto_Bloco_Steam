@@ -4,12 +4,13 @@ import matplotlib.pyplot as plt
 from st_pages import Page, show_pages, add_page_title
 import streamlit as st
 import os
-import StreamlitCustomLibrary as at_lib
+#import StreamlitCustomLibrary as at_lib
 
 
-at_lib.set_page_config()
-at.SetTheme()
+#at_lib.set_page_config()
+#at.SetTheme()
 
+st.text(__file__)
     
 #add_page_title()
 #show_pages(
