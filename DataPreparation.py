@@ -469,6 +469,12 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 
 st.dataframe(df_redux,hide_index=True,height=250)
 
+st.table(df_redux.describe())
+
+#cols = st.columns(len(df_redux.columns))
+#for col in cols:
+#    with col:
+        
 #at_lib.PreserveCSV('df_redux',df_redux)
 
 st.download_button(
