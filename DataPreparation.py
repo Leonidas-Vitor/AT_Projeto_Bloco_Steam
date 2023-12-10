@@ -10,7 +10,6 @@ import StreamlitCustomLibrary as at_lib
 at_lib.SetPageConfig()
 at_lib.SetTheme()
 
-
 st.header('Preparação dos dados',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(25,
@@ -115,7 +114,6 @@ with cols[0]:
     Jogos não lançados não podem ser analisados, pois ainda não foram comercializados
     '''),unsafe_allow_html=True)
 with cols[2]:
-    st.text((df_redux['release_date'].str['coming_soon'] == True))
     notLaunched = df_redux[(df_redux['release_date'].str['coming_soon'] == True)]['steam_appid'].count()
     notLaunchedPercent = (notLaunched/df_redux['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{notLaunched}', delta=f'-{notLaunchedPercent:.2f}%')
