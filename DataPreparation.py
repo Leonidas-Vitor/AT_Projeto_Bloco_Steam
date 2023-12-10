@@ -226,7 +226,8 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 
 def GetMainGenre(tags):
     if (type(tags) == str):
-        tags= ast.literal_eval(tags)
+        tags = ast.literal_eval(tags)
+        st.text(tags)
     if (type(tags) == dict):
         #return max(tags, key=tags.get)
         main_genre = {}
