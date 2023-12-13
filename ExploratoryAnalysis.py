@@ -28,10 +28,7 @@ st.dataframe(df_steam,height=250)
 
 st.divider()
 
-#st.dataframe(df_steam.describe(),height=250,hide_index=True)
-
 #nCols = ['total_duration','total_achievements','total_supported_languages','positive_reviews_percent','price', 'self_published_percent','commercialization_days']
-df_steam_numerics = df_steam.drop(columns=['name','release_date','tags','main_genre','hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent'])
 
 
 x_plots = 2
@@ -40,7 +37,7 @@ y_plots = 3
 st.subheader('Filtros categóricos',divider=True)
 
 option = st.selectbox(
-    'Escolha o gênero do jogo para gerar a regressão linear',(
+    'Escolha um gênero de jogo',(
     'Roguelike Deckbuilder','4X',
     'Simulation','Management', #=> Esses dois são juntos
     'Open World Survival Craft','City Builder','RPG','Rogue-like','Metroidvania','Dungeon Crawler','Souls-like',
@@ -60,6 +57,9 @@ with cols[1]:
 with cols[2]:
     cp =st.checkbox('Incluir jogos com co-op', value=True)
     df_steam = df_steam[df_steam['hasCoop'] == cp]
+
+
+df_steam_numerics = df_steam.drop(columns=['name','release_date','tags','main_genre','hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent'])
 st.subheader('Filtros',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(25,
