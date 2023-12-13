@@ -204,8 +204,8 @@ st.dataframe(df_steam[df_steam['developers'] == ''])
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
-    Observando os exemplares acima e fazendo uma busca de alguns deles diretamente na loja steam pode-se constatar que;
-    \n- Apps com \'Playtest\' no nome redirecionam para um outro app, provavelmente esses sãos appids temporários para algum uso específico.
+    Observando os exemplares acima e fazendo uma busca de alguns deles diretamente na loja steam pode-se constatar que;\
+    \n- Apps com \'Playtest\' no nome redirecionam para um outro app, provavelmente esses sãos appids temporários para algum uso específico.\
     \n- Existem alguns appids sem a palavra \'Playtest\' no nome, dentro dos que foram observados eles não foram lançados ainda.
     '''),unsafe_allow_html=True)
 

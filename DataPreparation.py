@@ -13,9 +13,9 @@ st.header('Preparação dos dados',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''
-    Agora iremos estruturar os dados de forma que possam ser melhor trabalhados e filtrados.\
-    Para isso iremos criar novas colunas, remover colunas que não serão mais utilizadas e tratar\
-    os dados com problemas de qualidade mais evidente, na próxima página continuaremos a tratar de\
+    Agora iremos estruturar os dados de forma que fique mais fácil de utilizá-los com eles.\
+    \nPara isso iremos criar novas colunas, remover colunas que não serão mais utilizadas e tratar\
+    os problemas de qualidade mais evidente, na próxima página continuaremos a tratar de\
     problemas de qualidade.
     '''),unsafe_allow_html=True)
 
@@ -34,7 +34,7 @@ st.dataframe(df_steam,hide_index=True,height=250)
 
 st.divider()
 
-cols = st.columns([0.4,0.6])
+cols = st.columns([0.45,0.55])
 with cols[0]:
     st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
@@ -116,6 +116,9 @@ with cols[2]:
     notLaunchedPercent = (notLaunched/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{notLaunched}', delta=f'-{notLaunchedPercent:.2f}%')
 
+with st.expander('Amostra dos apps removidos'):
+    st.dataframe(df_steam[(df_steam['release_date'].str['coming_soon'] == True) | (df_steam['release_date'].str['date'] == '')].sample(5),use_container_width=True)
+
 df_steam = df_steam[(df_steam['release_date'].str['coming_soon'] == False) & (df_steam['release_date'].str['date'] != '')]
 
 st.divider()
@@ -131,6 +134,9 @@ with cols[2]:
     noTag = df_steam[df_steam['tags'].apply(lambda x: len(ast.literal_eval(x)) == 0)]['steam_appid'].count()
     notTagPercent = (noTag/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{noTag}', delta=f'-{notTagPercent:.2f}%')
+
+with st.expander('Amostra dos apps removidos'):
+    st.dataframe(df_steam[df_steam['tags'].apply(lambda x: len(ast.literal_eval(x)) == 0)].sample(5),use_container_width=True)
 
 df_steam = df_steam[df_steam['tags'].apply(lambda x: len(ast.literal_eval(x)) > 0)]
 
@@ -149,7 +155,9 @@ with cols[2]:
     notPricePercent = (noPrice/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{noPrice}', delta=f'-{notPricePercent:.2f}%')
 
-st.table(df_steam[df_steam['price_overview'] == ''].sample(5))
+with st.expander('Amostra dos apps removidos'):
+    st.dataframe(df_steam[df_steam['price_overview'] == ''].sample(5),use_container_width=True)
+
 df_steam = df_steam[df_steam['price_overview'] != '']
 
 st.divider()
@@ -165,6 +173,9 @@ with cols[2]:
     noCat = df_steam[df_steam['categories'] == '']['steam_appid'].count()
     notCatPercent = (noCat/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{noCat}', delta=f'-{notCatPercent:.2f}%')
+
+with st.expander('Amostra dos apps removidos'):
+    st.dataframe(df_steam[df_steam['categories'] == ''].sample(5),use_container_width=True)
 
 df_steam = df_steam[df_steam['categories'] != '']
 
@@ -265,9 +276,7 @@ df_steam['tags'] = df_steam['tags'].apply(lambda tags: OrganizeTags(tags))
 #st.dataframe(df_steam['tags'],use_container_width=True)
 
 #------------ Acesso antecipado
-cols = st.columns([0.5,0.5])
-with cols[0]:
-    st.markdown(at_lib.GetBasicTextMarkdown(20,
+st.markdown(at_lib.GetBasicTextMarkdown(20,
         '''
         Criação da coluna isEarlyAcess, ela foi apartir da busca da palavra \'Early Access\' na coluna genres
         '''),unsafe_allow_html=True)
@@ -293,8 +302,7 @@ def IsEarlyAcess(genres):
 #Criação de uma coluna que identifica se um jogo está ou não em acesso antecipado
 df_steam = df_steam.assign(isEarlyAcess = df_steam['genres'].apply(lambda genres: IsEarlyAcess(genres)))
 
-with cols[1]:
-    st.table(df_steam[['isEarlyAcess']].value_counts().reset_index().rename(columns={0:'count'}))
+st.table(df_steam[['isEarlyAcess']].value_counts().reset_index().rename(columns={0:'count'}))
 
 #------------ Data de lançamento
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -454,6 +462,8 @@ df_steam['total_achievements'] = df_steam['achievements'].str['total']
 df_steam['total_achievements'].fillna(0)
 
 df_steam['total_achievements'] = df_steam['total_achievements'].apply(lambda x: 0 if np.isnan(x) else x)
+
+st.dataframe(df_steam[['name','achievements','total_achievements']].sample(5),use_container_width=True)
 
 #----------- Rename das colunas
 
