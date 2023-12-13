@@ -92,19 +92,6 @@ with st.expander('Apps com tags indevidas'):
     st.dataframe(df_steam[df_steam['ContainForbiddenTag']==True][['name','id','tags']],hide_index=True,height=250,use_container_width=True)
 
 df_steam = df_steam[df_steam['ContainForbiddenTag']==False]
-st.subheader('Remoção de playtests',divider=True)
-
-word = st.text_input('Digite uma palavra para buscar jogos que a contenham no nome','Playtest')
-
-def ContainInName(name):
-    if name != None:
-        return word in name
-    else:
-        return False
-
-df_steam['isPlaytest'] = df_steam['name'].apply(lambda n: ContainInName(n))
-
-st.dataframe(df_steam[df_steam['isPlaytest'] == True],hide_index=True,height=250,use_container_width=True)
 st.subheader('Preenchendo as durações ausentes',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -124,16 +111,23 @@ df_duration_median = df_duration_median.groupby('main_genre').median().reset_ind
 
 st.dataframe(df_duration_median,use_container_width=True)
 
-def FillDuration(row):
-    if (row['total_duration'] == 0 or np.isnan(row['total_duration']) or type(row['total_duration']) == str):
-        row['total_duration'] = df_duration_median[df_duration_median['main_genre'] == row['main_genre']]['total_duration'].values[0]
-    return row
 
-df_steam = df_steam.apply(FillDuration,axis=1)
+def FillDuration(df):
+    mask = (df['total_duration'] == 0) | df['total_duration'].isna() | df['total_duration'].apply(type) == str
+    genres = df.loc[mask, 'main_genre']
+    df.loc[mask, 'total_duration'] = df_duration_median.set_index('main_genre').loc[genres, 'total_duration'].values
+    return df
 
-df_steam.drop(columns=['hltb_similarity'],inplace=True)
+df_steam = FillDuration(df_steam)
 
-df_steam.drop(columns=['ContainForbiddenTag','isEarlyAcess'],inplace=True)
+#def FillDuration(row):
+#   if (row['total_duration'] == 0 or np.isnan(row['total_duration']) or type(row['total_duration']) == str):
+#        row['total_duration'] = df_duration_median[df_duration_median['main_genre'] == row['main_genre']]['total_duration'].values[0]
+#    return row
+
+#df_steam = df_steam.apply(FillDuration,axis=1)
+
+df_steam.drop(columns=['ContainForbiddenTag','isEarlyAcess','hltb_similarity'],inplace=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
