@@ -40,7 +40,7 @@ fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 5))
 for i,col in enumerate(df_steam_numerics.columns):
     sb.boxplot(data=df_steam_numerics[col], ax=axs[i//x_plots,i%y_plots])
 
-plt.subplots_adjust(wspace=0.3, hspace=0.3)
+plt.subplots_adjust(wspace=1, hspace=1)
 st.pyplot(fig)
 
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 10))
@@ -59,9 +59,7 @@ nOrder.append('total_reviews')
 
 df_steam_numerics = df_steam_numerics[nOrder]
 
-df_rescaled = pd.DataFrame(scaler.fit_transform(df_steam_numerics), columns=df_steam_numerics.columns)
-
-df_steam_corr = df_rescaled.corr()
+df_steam_corr = df_steam_numerics.corr()
 sb.heatmap(df_steam_corr, annot=True, fmt='.2f',cmap=sb.color_palette("coolwarm", as_cmap=True), ax=ax, mask=np.triu(df_steam_corr, k=1))
 ax.axhline(6, color='black', linewidth=2)
 ax.axhline(7, color='black', linewidth=4)
