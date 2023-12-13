@@ -92,6 +92,19 @@ with st.expander('Apps com tags indevidas'):
     st.dataframe(df_steam[df_steam['ContainForbiddenTag']==True][['name','id','tags']],hide_index=True,height=250,use_container_width=True)
 
 df_steam = df_steam[df_steam['ContainForbiddenTag']==False]
+st.subheader('Remoção de playtests',divider=True)
+
+word = st.text_input('Digite uma palavra para buscar jogos que a contenham no nome','Playtest')
+
+def ContainInName(name):
+    if name != None:
+        return word in name
+    else:
+        return False
+
+df_steam['isPlaytest'] = df_steam['name'].apply(lambda n: ContainInName(n))
+
+st.dataframe(df_steam[df_steam['isPlaytest'] == True],hide_index=True,height=250,use_container_width=True)
 st.subheader('Preenchendo as durações ausentes',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -119,6 +132,8 @@ def FillDuration(row):
 df_steam = df_steam.apply(FillDuration,axis=1)
 
 df_steam.drop(columns=['hltb_similarity'],inplace=True)
+
+df_steam.drop(columns=['ContainForbiddenTag','isEarlyAcess'],inplace=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
