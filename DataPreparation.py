@@ -149,7 +149,7 @@ with cols[2]:
     notPricePercent = (noPrice/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{noPrice}', delta=f'-{notPricePercent:.2f}%')
 
-st.table(df_steam[df_steam['price_overview'] == ''].sample(5),use_container_width=True)
+st.table(df_steam[df_steam['price_overview'] == ''].sample(5))
 df_steam = df_steam[df_steam['price_overview'] != '']
 
 st.divider()

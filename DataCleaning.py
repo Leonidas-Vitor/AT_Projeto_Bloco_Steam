@@ -27,3 +27,11 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 st.dataframe(df_steam,hide_index=True,height=250)
 
 st.divider()
+st.subheader('Remoção de não jogos',divider=True)
+
+st.download_button(
+    label="Baixar o dataset preparado",
+    data=df_steam.to_csv(index=False),
+    file_name='SteamDatasetForStreamlitClean.csv',
+    mime='text/csv',
+)

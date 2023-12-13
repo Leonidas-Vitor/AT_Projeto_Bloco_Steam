@@ -131,7 +131,7 @@ st.pyplot(fig)
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
     Podemos observar que temos muitas DLCs e demos, além de outros tipos de apps que não são jogos ({(df_steam['type'] != 'game').sum()})\
-    e portanto\ iremos remove-los também pois não são relevantes para o estudo.
+    e portanto iremos remove-los também pois não são relevantes para o estudo.
     '''),unsafe_allow_html=True)
 
 df_steam.drop(df_steam[df_steam['type'] != 'game'].index,inplace=True)
@@ -146,7 +146,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
 fig, ax = plt.subplots(figsize=(10,5))
 sb.histplot(df_steam,x=df_steam['required_age'], hue=df_steam['required_age'],ax=ax, alpha=1.0,shrink=0.85)
 legend = ax.get_legend()
-legend.set_bbox_to_anchor((1.15, 1.2))
+legend.set_bbox_to_anchor((1.17, 1.2))
 st.pyplot(fig)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -205,8 +205,8 @@ st.dataframe(df_steam[df_steam['developers'] == ''])
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
     Observando os exemplares acima e fazendo uma busca de alguns deles diretamente na loja steam pode-se constatar que;
-    - Apps com \'Playtest\' no nome redirecionam para um outro app, provavelmente esses sãos appids temporários para algum uso específico.
-    - Existem alguns appids sem a palavra \'Playtest\' no nome, dentro dos que foram observados eles não foram lançados ainda.
+    \n- Apps com \'Playtest\' no nome redirecionam para um outro app, provavelmente esses sãos appids temporários para algum uso específico.
+    \n- Existem alguns appids sem a palavra \'Playtest\' no nome, dentro dos que foram observados eles não foram lançados ainda.
     '''),unsafe_allow_html=True)
 
 st.divider()
