@@ -474,15 +474,6 @@ st.dataframe(df_redux,hide_index=True,height=250)
 
 st.table(df_redux.set_index('id').describe())
 
-#st.dataframe(df_redux[df_redux['release_date'].isna()],use_container_width=True)
-#st.text(df_redux[df_redux['release_date'].isna()]['release_date'].count())
-
-#cols = st.columns(len(df_redux.columns))
-#for col in cols:
-#    with col:
-        
-#at_lib.PreserveCSV('df_redux',df_redux)
-
 st.download_button(
     label="Baixar o dataset preparado",
     data=df_redux.to_csv(index=False),
