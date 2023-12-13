@@ -98,7 +98,9 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
     Existe uma grande ausência de dados de duração, para resolver esse problema iremos inferir os dados faltantes\
     através da mediana da duração dos jogos do mesmo gênero. Jogos que tiverem uma similaridade de nome menor que\
-    0.9 também serão substituídos pela mediana do gênero, já que seus dados não são confiáveis.
+    0.9 também serão substituídos pela mediana do gênero, já que seus dados não são confiáveis. A inputação desses dados\
+    faltantes está sendo feita nesse momento pois já removemos a maioria dos apps que poderiam influênciar na mediana\
+    dos gêneros (ex.: VR).
     '''),unsafe_allow_html=True)
 
 df_duration_median = df_steam[(df_steam['total_duration'] > 0) & (~np.isnan(df_steam['total_duration'])) &
@@ -130,6 +132,6 @@ st.table(df_steam.set_index('id').describe())
 st.download_button(
     label="Baixar o dataset preparado",
     data=df_steam.to_csv(index=False),
-    file_name='SteamDatasetForStreamlitClean.csv',
+    file_name='SteamDatasetForStreamlitCleaned.csv',
     mime='text/csv',
 )
