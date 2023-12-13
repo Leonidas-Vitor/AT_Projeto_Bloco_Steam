@@ -31,7 +31,7 @@ st.divider()
 #st.dataframe(df_steam.describe(),height=250,hide_index=True)
 
 #nCols = ['total_duration','total_achievements','total_supported_languages','positive_reviews_percent','price', 'self_published_percent','commercialization_days']
-df_steam_numerics = df_steam.drop(columns=['name','id','release_date','tags','main_genre','hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent'])
+df_steam_numerics = df_steam.drop(columns=['name','release_date','tags','main_genre','hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent'])
 
 
 x_plots = 2
