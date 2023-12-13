@@ -47,24 +47,20 @@ with st.expander('Jogos em acesso antecipado'):
 df_steam = df_steam[df_steam['isEarlyAcess']==False]
 st.subheader('Remoção de não jogos',divider=True)
 
-st.markdown(at_lib.GetBasicTextMarkdown(20,
-    f'''
-    O dataset ainda possui apps que não são jogos, como softwares de modelagem 3D e utilitários, e por serem classificados\
-    pela loja como \"game\" na antiga coluna \"type\" eles ainda estão presentes no dataset. Iremos remove-los utilizando uma\
-    lista de tags normalmente associdas a esses tipos de apps.
-    '''),unsafe_allow_html=True)
-
-forbiddenTags = ['Animation & Modeling','Game Development','Video Production', 'Utilities','Photo Editing','Software','VR']
+forbiddenTags = ['Animation & Modeling','Game Development','Video Production', 'Utilities','Photo Editing','Software']
 df_steam['ContainForbiddenTag'] = df_steam['tags'].apply(lambda x: any(tag in x for tag in forbiddenTags))
 
 cols = st.columns([0.9,0.1])
 with cols[0]:
+    st.markdown(at_lib.GetBasicTextMarkdown(20,
+        f'''
+        O dataset ainda possui apps que não são jogos, como softwares de modelagem 3D e utilitários, e por serem classificados\
+        pela loja como \"game\" na antiga coluna \"type\" eles ainda estão presentes no dataset. Iremos remove-los utilizando uma\
+        lista de tags normalmente associdas a esses tipos de apps.
+        '''),unsafe_allow_html=True)
     st.markdown(at_lib.GetBasicTextMarkdown(15,
         f'''
-        Lista de tags indevidas:
         {forbiddenTags}
-        A tag VR foi incluída pois não estamos interessados em jogos de realidade virtual para esse projeto, então aproveitamos\
-        a operação para já retirar esse tipo de app do dataset.
         '''),unsafe_allow_html=True)
 
 with cols[1]:
@@ -75,6 +71,27 @@ with cols[1]:
 with st.expander('Apps com tags indevidas'):
     st.dataframe(df_steam[df_steam['ContainForbiddenTag']==True][['name','id','tags']],hide_index=True,height=250,use_container_width=True)
 
+df_steam = df_steam[df_steam['ContainForbiddenTag']==False]
+st.subheader('Remoção de apps VR',divider=True)
+
+forbiddenTag = ['VR']
+df_steam['ContainForbiddenTag'] = df_steam['tags'].apply(lambda x: any(tag in x for tag in forbiddenTag))
+cols = st.columns([0.9,0.1])
+with cols[0]:
+    st.markdown(at_lib.GetBasicTextMarkdown(20,
+        '''
+        Esse modelo de regressão não irá contemplar jogos/apps de realidade virtual portanto iremos remove-los do dataset.
+        '''),unsafe_allow_html=True)
+
+with cols[1]:
+    forbiddenTagCount = df_steam[df_steam['ContainForbiddenTag']==True]['id'].count()
+    forbiddenTagPercent = (forbiddenTagCount/df_steam['id'].count())*100
+    st.metric(label="Jogos removidos", value=f'{forbiddenTagCount}', delta=f'-{forbiddenTagPercent:.2f}%')
+
+with st.expander('Apps com tags indevidas'):
+    st.dataframe(df_steam[df_steam['ContainForbiddenTag']==True][['name','id','tags']],hide_index=True,height=250,use_container_width=True)
+
+df_steam = df_steam[df_steam['ContainForbiddenTag']==False]
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''

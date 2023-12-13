@@ -100,6 +100,8 @@ with cols[2]:
     freeGamesPercent = (freeGames/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{freeGames}', delta=f'-{freeGamesPercent:.2f}%')
 
+with st.expander('Amostra dos apps removidos'):
+    st.dataframe(df_steam[(df_steam['is_free'] == True)].sample(5),use_container_width=True)
 df_steam = df_steam[(df_steam['is_free'] == False)]
 
 st.divider()
@@ -108,7 +110,7 @@ cols = st.columns([0.5,0.2,0.3])
 with cols[0]:
     st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
-    Jogos não lançados não podem ser analisados, pois ainda não foram comercializados
+    Jogos não lançados não podem ser analisados, pois ainda não foram comercializados tendo como data referência 2023/11/08
     '''),unsafe_allow_html=True)
 with cols[2]:
     df_steam['release_date'] = df_steam['release_date'].apply(ast.literal_eval)
@@ -479,6 +481,11 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
     '''),unsafe_allow_html=True)
 
+df_steam['id'] = df_steam['id'].astype(int)
+df_steam['total_reviews'] = df_steam['total_reviews'].astype(int)
+df_steam['total_supported_languages'] = df_steam['total_supported_languages'].astype(int)
+df_steam['total_achievements'] = df_steam['total_achievements'].astype(int)
+df_steam['release_date'] = df_steam['release_date'].astype('datetime64[ns]')
 
 st.dataframe(df_steam,hide_index=True,height=250)
 
