@@ -34,10 +34,6 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     
 st.dataframe(df_redux,hide_index=True,height=250)
 
-df_redux['positive_reviews_percent'].fillna(0,inplace=True)
-df_redux.dropna(inplace=True,subset='commercialization_days')
-
-
 option = st.selectbox(
     'Escolha o gênero do jogo para gerar a regressão linear',(
     'Roguelike Deckbuilder','4X',
