@@ -24,7 +24,7 @@ st.header('Regressão linear',divider=True)
 #    Teste2
 #    '''),unsafe_allow_html=True)
 
-df_steam = pd.read_csv('SteamDatasetForStreamlitClean.csv',engine='pyarrow')
+df_steam = pd.read_csv('SteamDatasetForStreamlitReadyForRegression.csv',engine='pyarrow')
 
 #with st.expander('Dataset não filtrado'):
 st.markdown(at_lib.GetBasicTextMarkdown(20,

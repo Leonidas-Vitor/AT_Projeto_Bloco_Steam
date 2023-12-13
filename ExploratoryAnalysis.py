@@ -71,7 +71,7 @@ with cols[2]:
 st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Quantidade de jogos restantes no dataset: {df_steam_numerics.shape[0]}'''),unsafe_allow_html=True)
 st.subheader('Boxplot',divider=True)
 
-fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
+fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 10))
 
 i  = 0
 for r in range(x_plots):
@@ -83,7 +83,7 @@ for r in range(x_plots):
         sb.boxplot(data=df_steam_numerics[colName],  ax=axs[r, c], orient='v',color=sb.color_palette()[i % len(sb.color_palette())])
         i = i + 1
         
-plt.subplots_adjust(wspace=0.3, hspace=0.2)
+plt.subplots_adjust(wspace=0.3, hspace=0.0)
 st.pyplot(fig)
 st.subheader('Dispersão',divider=True)
 
@@ -116,20 +116,18 @@ ax.axhline(7, color='yellow', linewidth=4)
 
 st.pyplot(fig)
 
-df_steam.drop(columns=['hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent','main_genre','tags','name'],inplace=True)
+#df_steam.drop(columns=['hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent','main_genre','tags','name'],inplace=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
-    O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
+    O dataset atualmente possui {df_steam_numerics.shape[0]} linhas e {df_steam_numerics.shape[1]} colunas.
     '''),unsafe_allow_html=True)
 
-st.dataframe(df_steam,hide_index=True,height=250)
-
-st.table(df_steam.set_index('id').describe())
+st.dataframe(df_steam_numerics,height=250)
 
 st.download_button(
     label="Baixar o dataset preparado",
-    data=df_steam.to_csv(index=False),
-    file_name='SteamDatasetForStreamlitCleaned.csv',
+    data=df_steam_numerics.to_csv(index=True),
+    file_name='SteamDatasetForStreamlitReadyForRegression.csv',
     mime='text/csv',
 )
