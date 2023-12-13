@@ -18,17 +18,17 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''),unsafe_allow_html=True)
 
 
-df_redux = pd.read_csv('SteamDatasetForStreamlit.csv',engine='pyarrow')
+df_steam = pd.read_csv('SteamDatasetForStreamlit.csv',engine='pyarrow')
 
-df_redux.drop(df_redux[df_redux['scrap_status'] != 'Scrap_Sucess'].index,inplace=True)
-df_redux.drop(df_redux[df_redux['type'] != 'game'].index,inplace=True)
+df_steam.drop(df_steam[df_steam['scrap_status'] != 'Scrap_Sucess'].index,inplace=True)
+df_steam.drop(df_steam[df_steam['type'] != 'game'].index,inplace=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
-    O dataset atualmente possui {df_redux.shape[0]} linhas e {df_redux.shape[1]} colunas.
+    O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
     '''),unsafe_allow_html=True)
 
-st.dataframe(df_redux,hide_index=True,height=250)
+st.dataframe(df_steam,hide_index=True,height=250)
 
 st.divider()
 
@@ -72,7 +72,7 @@ with cols[1]:
 | recommendations| Iremos utilizar as colunas positive e negativa ao invés dessa                       |
     ''')
 
-df_redux.drop(columns=['scrap_status','type','required_age','spy_status','hltb_status','hltb_name',
+df_steam.drop(columns=['scrap_status','type','required_age','spy_status','hltb_status','hltb_name',
     'recommendations'],inplace=True)
 
 st.divider()
@@ -84,7 +84,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
 
 #Convertendo a coluna release_date para um dicionário
 #try:
-df_redux['release_date'] = df_redux['release_date'].apply(ast.literal_eval)
+df_steam['release_date'] = df_steam['release_date'].apply(ast.literal_eval)
 #except Exception as e:
     #O dicionário já foi convertido
 #    pass
@@ -98,11 +98,11 @@ with cols[0]:
         ou seja, os jogos tem um preço para serem adquiridos/jogados.
         '''),unsafe_allow_html=True)
 with cols[2]:
-    freeGames = df_redux[(df_redux['is_free'] == True)]['steam_appid'].count()
-    freeGamesPercent = (freeGames/df_redux['steam_appid'].count())*100
+    freeGames = df_steam[(df_steam['is_free'] == True)]['steam_appid'].count()
+    freeGamesPercent = (freeGames/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{freeGames}', delta=f'-{freeGamesPercent:.2f}%')
 
-df_redux = df_redux[(df_redux['is_free'] == False)]
+df_steam = df_steam[(df_steam['is_free'] == False)]
 
 st.divider()
 cols = st.columns([0.5,0.2,0.3])
@@ -113,11 +113,11 @@ with cols[0]:
     Jogos não lançados não podem ser analisados, pois ainda não foram comercializados
     '''),unsafe_allow_html=True)
 with cols[2]:
-    notLaunched = df_redux[(df_redux['release_date'].str['coming_soon'] == True) | (df_redux['release_date'].str['date'] == '')]['steam_appid'].count()
-    notLaunchedPercent = (notLaunched/df_redux['steam_appid'].count())*100
+    notLaunched = df_steam[(df_steam['release_date'].str['coming_soon'] == True) | (df_steam['release_date'].str['date'] == '')]['steam_appid'].count()
+    notLaunchedPercent = (notLaunched/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{notLaunched}', delta=f'-{notLaunchedPercent:.2f}%')
 
-df_redux = df_redux[(df_redux['release_date'].str['coming_soon'] == False) & (df_redux['release_date'].str['date'] != '']
+df_steam = df_steam[(df_steam['release_date'].str['coming_soon'] == False) & (df_steam['release_date'].str['date'] != '')]
 
 st.divider()
 cols = st.columns([0.5,0.2,0.3])
@@ -129,11 +129,11 @@ with cols[0]:
     em outro momento se for necessário é possível obter as tags diretamente na página do jogos na loja Steam.
     '''),unsafe_allow_html=True)
 with cols[2]:
-    noTag = df_redux[df_redux['tags'].apply(lambda x: len(ast.literal_eval(x)) == 0)]['steam_appid'].count()
-    notTagPercent = (noTag/df_redux['steam_appid'].count())*100
+    noTag = df_steam[df_steam['tags'].apply(lambda x: len(ast.literal_eval(x)) == 0)]['steam_appid'].count()
+    notTagPercent = (noTag/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{noTag}', delta=f'-{notTagPercent:.2f}%')
 
-df_redux = df_redux[df_redux['tags'].apply(lambda x: len(ast.literal_eval(x)) > 0)]
+df_steam = df_steam[df_steam['tags'].apply(lambda x: len(ast.literal_eval(x)) > 0)]
 
 
 st.divider()
@@ -146,11 +146,11 @@ with cols[0]:
     removidos.
     '''),unsafe_allow_html=True)
 with cols[2]:
-    noPrice = df_redux[df_redux['price_overview'] == '']['steam_appid'].count()
-    notPricePercent = (noPrice/df_redux['steam_appid'].count())*100
+    noPrice = df_steam[df_steam['price_overview'] == '']['steam_appid'].count()
+    notPricePercent = (noPrice/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{noPrice}', delta=f'-{notPricePercent:.2f}%')
 
-df_redux = df_redux[df_redux['price_overview'] != '']
+df_steam = df_steam[df_steam['price_overview'] != '']
 
 st.divider()
 cols = st.columns([0.5,0.2,0.3])
@@ -162,11 +162,11 @@ with cols[0]:
     para desenvolvedores e não jogos, portanto serão removidos.
     '''),unsafe_allow_html=True)
 with cols[2]:
-    noCat = df_redux[df_redux['categories'] == '']['steam_appid'].count()
-    notCatPercent = (noCat/df_redux['steam_appid'].count())*100
+    noCat = df_steam[df_steam['categories'] == '']['steam_appid'].count()
+    notCatPercent = (noCat/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{noCat}', delta=f'-{notCatPercent:.2f}%')
 
-df_redux = df_redux[df_redux['categories'] != '']
+df_steam = df_steam[df_steam['categories'] != '']
 
 st.divider()
 
@@ -244,10 +244,10 @@ def GetMainGenre(tags):
     else:
         return 'NoTags'
 
-df_redux = df_redux.assign(main_genre = df_redux['tags'].apply(lambda tags: GetMainGenre(tags)))
+df_steam = df_steam.assign(main_genre = df_steam['tags'].apply(lambda tags: GetMainGenre(tags)))
 
 #with cols[1]:
-st.dataframe(df_redux[['main_genre']].value_counts().reset_index().rename(columns={0:'count'}),use_container_width=True)
+st.dataframe(df_steam[['main_genre']].value_counts().reset_index().rename(columns={0:'count'}),use_container_width=True)
 
 #------------ Organização das tags
 
@@ -260,9 +260,9 @@ def OrganizeTags(tags):
         newList.append(tag)
     return newList
 
-df_redux['tags'] = df_redux['tags'].apply(lambda tags: OrganizeTags(tags))
+df_steam['tags'] = df_steam['tags'].apply(lambda tags: OrganizeTags(tags))
 
-#st.dataframe(df_redux['tags'],use_container_width=True)
+#st.dataframe(df_steam['tags'],use_container_width=True)
 
 #------------ Acesso antecipado
 cols = st.columns([0.5,0.5])
@@ -291,10 +291,10 @@ def IsEarlyAcess(genres):
         return False
     
 #Criação de uma coluna que identifica se um jogo está ou não em acesso antecipado
-df_redux = df_redux.assign(isEarlyAcess = df_redux['genres'].apply(lambda genres: IsEarlyAcess(genres)))
+df_steam = df_steam.assign(isEarlyAcess = df_steam['genres'].apply(lambda genres: IsEarlyAcess(genres)))
 
 with cols[1]:
-    st.table(df_redux[['isEarlyAcess']].value_counts().reset_index().rename(columns={0:'count'}))
+    st.table(df_steam[['isEarlyAcess']].value_counts().reset_index().rename(columns={0:'count'}))
 
 #------------ Data de lançamento
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -304,33 +304,33 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 
 columns = st.columns([0.5,0.5])
 with columns[0]:
-    st.dataframe(df_redux['release_date'].head(50),use_container_width=True)
+    st.dataframe(df_steam['release_date'].head(50),use_container_width=True)
 
-df_redux['release_date'] = pd.to_datetime(df_redux['release_date'].str['date'].apply(lambda d: np.nan if len(d) == 0 else d[:3] + ' 15, ' + d[4:8] if len(d) <= 8  else d))
-df_redux.dropna(inplace=True,subset='release_date')
-#df_redux['release_date'].dropna(inplace=True)
+df_steam['release_date'] = pd.to_datetime(df_steam['release_date'].str['date'].apply(lambda d: np.nan if len(d) == 0 else d[:3] + ' 15, ' + d[4:8] if len(d) <= 8  else d))
+df_steam.dropna(inplace=True,subset='release_date')
+#df_steam['release_date'].dropna(inplace=True)
 
 with columns[1]:
-    st.dataframe(df_redux['release_date'].head(50),use_container_width=True)
+    st.dataframe(df_steam['release_date'].head(50),use_container_width=True)
 #------------ Dias em comercialização
-df_redux['commercialization_days'] = (pd.Timestamp('2023/11/08') - df_redux['release_date']).dt.days
+df_steam['commercialization_days'] = (pd.Timestamp('2023/11/08') - df_steam['release_date']).dt.days
 #----------- Preço
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
     Coluna price agora está em formato numérico
     '''),unsafe_allow_html=True)
 
-df_redux['price_overview'] = df_redux['price_overview'].apply(ast.literal_eval)
-df_redux['price'] = df_redux['price_overview'].str['initial']/100
+df_steam['price_overview'] = df_steam['price_overview'].apply(ast.literal_eval)
+df_steam['price'] = df_steam['price_overview'].str['initial']/100
 
 columns = st.columns([0.5,0.5])
 with columns[0]:
-    st.dataframe(df_redux['price_overview'].head(50),use_container_width=True)
+    st.dataframe(df_steam['price_overview'].head(50),use_container_width=True)
 
 with columns[1]:
-    st.dataframe(df_redux['price'].head(50),use_container_width=True)
+    st.dataframe(df_steam['price'].head(50),use_container_width=True)
 
-df_redux.drop(columns=['price_overview'],inplace=True)
+df_steam.drop(columns=['price_overview'],inplace=True)
 
 #----------- Modos de jogo
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -349,13 +349,13 @@ def ContainsTargetCategory(categories, target_category):
         #o jogo não possui categorias
         return False
 
-df_redux['categories'] = df_redux['categories'].apply(ast.literal_eval)
+df_steam['categories'] = df_steam['categories'].apply(ast.literal_eval)
 
-df_redux['hasSingleplayer'] = df_redux['categories'].apply(lambda s : ContainsTargetCategory(s,'Single-player'))
-df_redux['hasMultiplayer'] = df_redux['categories'].apply(lambda s : ContainsTargetCategory(s,'Multi-player'))
-df_redux['hasCoop'] = df_redux['categories'].apply(lambda s : ContainsTargetCategory(s,'Co-op'))
+df_steam['hasSingleplayer'] = df_steam['categories'].apply(lambda s : ContainsTargetCategory(s,'Single-player'))
+df_steam['hasMultiplayer'] = df_steam['categories'].apply(lambda s : ContainsTargetCategory(s,'Multi-player'))
+df_steam['hasCoop'] = df_steam['categories'].apply(lambda s : ContainsTargetCategory(s,'Co-op'))
 
-st.dataframe(df_redux[['name','hasSingleplayer','hasMultiplayer','hasCoop']].sample(5),use_container_width=True)
+st.dataframe(df_steam[['name','hasSingleplayer','hasMultiplayer','hasCoop']].sample(5),use_container_width=True)
 #----------- Avaliações
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
@@ -364,11 +364,11 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     positive_reviews_percent é a porcentagem de avaliações positivas.
     '''),unsafe_allow_html=True)
 
-df_redux['total_reviews'] = df_redux['positive'].copy() + df_redux['negative'].copy()
-df_redux['positive_reviews_percent'] = df_redux['positive'].copy()/df_redux['total_reviews']
-df_redux['positive_reviews_percent'].fillna(0,inplace=True)
+df_steam['total_reviews'] = df_steam['positive'].copy() + df_steam['negative'].copy()
+df_steam['positive_reviews_percent'] = df_steam['positive'].copy()/df_steam['total_reviews']
+df_steam['positive_reviews_percent'].fillna(0,inplace=True)
 
-st.dataframe(df_redux[['name','total_reviews','positive_reviews_percent']].sample(5),use_container_width=True)
+st.dataframe(df_steam[['name','total_reviews','positive_reviews_percent']].sample(5),use_container_width=True)
 #----------- Línguas suportadas
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
@@ -376,11 +376,11 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     línguas suportadas pelo jogo.
     '''),unsafe_allow_html=True)
 
-df_redux['total_supported_languages'] = df_redux.supported_languages.str.split(',')
-df_redux['total_supported_languages'] = df_redux['total_supported_languages'].fillna('')
-df_redux['total_supported_languages'] = df_redux['total_supported_languages'].apply(lambda languages: len(languages))
+df_steam['total_supported_languages'] = df_steam.supported_languages.str.split(',')
+df_steam['total_supported_languages'] = df_steam['total_supported_languages'].fillna('')
+df_steam['total_supported_languages'] = df_steam['total_supported_languages'].apply(lambda languages: len(languages))
 
-st.dataframe(df_redux[['name','supported_languages','total_supported_languages']].sample(5),use_container_width=True)
+st.dataframe(df_steam[['name','supported_languages','total_supported_languages']].sample(5),use_container_width=True)
 #----------- Auto publicação
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
@@ -409,14 +409,14 @@ def ParseData(d):
     except Exception as e:
         return d
 
-df_redux['developers'] = df_redux['developers'].apply(ParseData)
-df_redux['publishers'] = df_redux['publishers'].apply(ParseData)
+df_steam['developers'] = df_steam['developers'].apply(ParseData)
+df_steam['publishers'] = df_steam['publishers'].apply(ParseData)
 
-df_redux['self_published_percent'] = df_redux.apply(lambda x: Is_sef_published(x.developers,x.publishers),axis=1)
+df_steam['self_published_percent'] = df_steam.apply(lambda x: Is_sef_published(x.developers,x.publishers),axis=1)
 
-df_redux['developers'] = df_redux['developers'].apply(lambda x: ', '.join(x) if isinstance(x, list) else x)
+df_steam['developers'] = df_steam['developers'].apply(lambda x: ', '.join(x) if isinstance(x, list) else x)
 
-st.dataframe(df_redux[['name','developers','publishers','self_published_percent']].sample(5),use_container_width=True)
+st.dataframe(df_steam[['name','developers','publishers','self_published_percent']].sample(5),use_container_width=True)
 #----------- Duração
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
@@ -425,8 +425,8 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     0.9 também serão substituídos pela mediana do gênero, já que seus dados não são confiáveis.
     '''),unsafe_allow_html=True)
 
-df_duration_median = df_redux[(df_redux['hltb_main_story'] > 0) & (~np.isnan(df_redux['hltb_main_story'])) &
-    (df_redux['hltb_similarity'] > 0.9)].copy()
+df_duration_median = df_steam[(df_steam['hltb_main_story'] > 0) & (~np.isnan(df_steam['hltb_main_story'])) &
+    (df_steam['hltb_similarity'] > 0.9)].copy()
 
 df_duration_median = df_duration_median[['main_genre','hltb_main_story']]
 df_duration_median = df_duration_median.groupby('main_genre').median().reset_index()
@@ -438,7 +438,7 @@ def FillDuration(row):
         row['hltb_main_story'] = df_duration_median[df_duration_median['main_genre'] == row['main_genre']]['hltb_main_story'].values[0]
     return row
 
-df_redux = df_redux.apply(FillDuration,axis=1)
+df_steam = df_steam.apply(FillDuration,axis=1)
 
 #----------- Conquistas
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -448,39 +448,39 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     disponíveis.
     '''),unsafe_allow_html=True)
 
-df_redux['achievements'] = df_redux['achievements'].apply(ParseData)
-df_redux['total_achievements'] = df_redux['achievements'].str['total']
+df_steam['achievements'] = df_steam['achievements'].apply(ParseData)
+df_steam['total_achievements'] = df_steam['achievements'].str['total']
 
-df_redux['total_achievements'].fillna(0)
+df_steam['total_achievements'].fillna(0)
 
-df_redux['total_achievements'] = df_redux['total_achievements'].apply(lambda x: 0 if np.isnan(x) else x)
+df_steam['total_achievements'] = df_steam['total_achievements'].apply(lambda x: 0 if np.isnan(x) else x)
 
 #----------- Rename das colunas
 
-df_redux.rename(columns={'steam_appid':'id','hltb_main_story':'total_duration'},inplace=True)
+df_steam.rename(columns={'steam_appid':'id','hltb_main_story':'total_duration'},inplace=True)
 
 st.divider()
 
-df_redux.drop(columns=['is_free','genres','supported_languages','categories','positive','negative',
+df_steam.drop(columns=['is_free','genres','supported_languages','categories','positive','negative',
     'developers','publishers','achievements','hltb_similarity','steamspy_owners'],inplace=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
-    O dataset atualmente possui {df_redux.shape[0]} linhas e {df_redux.shape[1]} colunas.
+    O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
     '''),unsafe_allow_html=True)
 
 
-st.dataframe(df_redux,hide_index=True,height=250)
+st.dataframe(df_steam,hide_index=True,height=250)
 
-st.table(df_redux.set_index('id').describe())
+st.table(df_steam.set_index('id').describe())
 
 st.download_button(
     label="Baixar o dataset preparado",
-    data=df_redux.to_csv(index=False),
+    data=df_steam.to_csv(index=False),
     file_name='SteamDatasetForStreamlitClean.csv',
     mime='text/csv',
 )
-#st.table(df_redux.dtypes)
+#st.table(df_steam.dtypes)
 # Visualizar/Analisar os dados resultantes
 
 

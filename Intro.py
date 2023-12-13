@@ -13,11 +13,10 @@ at_lib.SetTheme()
 show_pages(
     [
         Page('Intro.py','Introdução',":memo:"),
-#        #Page('Page_0.py','Sobre a aplicação',":building_construction:"),
-#        Page('Page_1.py','Aquisição de dados',":building_construction:"),
+#        Page('DataAcquisition.py','Aquisição de dados',":building_construction:"),
         Page('DataInspection.py','Conhecendo a base de dados',":mag:"),
         Page('DataPreparation.py','Preparação dos dados',":wrench:"),
-        #Page('ExploratoryAnalysis.py','Análise exploratória',":bar_chart:"),
+        Page('ExploratoryAnalysis.py','Análise exploratória',":bar_chart:"),
         Page('LinearRegression.py','Regressão linear',":bulb:"),
     ]
 )

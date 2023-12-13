@@ -24,15 +24,15 @@ st.header('Regressão linear',divider=True)
 #    Teste2
 #    '''),unsafe_allow_html=True)
 
-df_redux = pd.read_csv('SteamDatasetForStreamlitClean.csv',engine='pyarrow')
+df_steam = pd.read_csv('SteamDatasetForStreamlitClean.csv',engine='pyarrow')
 
 #with st.expander('Dataset não filtrado'):
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
-    O dataset atualmente possui {df_redux.shape[0]} linhas e {df_redux.shape[1]} colunas.
+    O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
     '''),unsafe_allow_html=True)
     
-st.dataframe(df_redux,hide_index=True,height=250)
+st.dataframe(df_steam,hide_index=True,height=250)
 
 option = st.selectbox(
     'Escolha o gênero do jogo para gerar a regressão linear',(
@@ -42,7 +42,7 @@ option = st.selectbox(
     'Visual Novel','Twin Stick Shooter','Horror','Sexual Content','Card Battler','Beat \'em up','FPS','Shoot \'Em Up'
     'Tower Defense','Match 3','Puzzle-Platformer','Puzzle','2D Platformer','3D Platformer','Battle Royale'),index=7)
 
-df_filtred = df_redux[df_redux['main_genre'] == option]
+df_filtred = df_steam[df_steam['main_genre'] == option]
 
 #---------------- Faltou lugar para upar um novo csv
 

@@ -78,27 +78,27 @@ with st.expander("Amostra do dataset original"):
 st.subheader('Dataset reduzido')
 
 #try:
-#    df_redux = st.session_state['df_redux'].copy()
+#    df_steam = st.session_state['df_steam'].copy()
 #except Exception as e:
-#    df_redux = at_lib.ReadCSV('df_redux','SteamDatasetForStreamlit.csv').copy()
+#    df_steam = at_lib.ReadCSV('df_steam','SteamDatasetForStreamlit.csv').copy()
 
-df_redux = pd.read_csv('SteamDatasetForStreamlit.csv',engine='pyarrow')
+df_steam = pd.read_csv('SteamDatasetForStreamlit.csv',engine='pyarrow')
     
-#= at_lib.ReadCSV('df_redux','SteamDatasetForStreamlit.csv')
-st.dataframe(df_redux,hide_index=True,height=250)
+#= at_lib.ReadCSV('df_steam','SteamDatasetForStreamlit.csv')
+st.dataframe(df_steam,hide_index=True,height=250)
 
 #buffer = io.StringIO()
-#df_redux.info(buf=buffer)
+#df_steam.info(buf=buffer)
 #s = buffer.getvalue()
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
-    O dataset reduzido possui {df_redux.shape[0]} linhas e {df_redux.shape[1]} colunas, sendo que\
-    {(df_redux['scrap_status'] != 'Scrap_Sucess').sum()} linhas não possuem dados, indicando um\
+    O dataset reduzido possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas, sendo que\
+    {(df_steam['scrap_status'] != 'Scrap_Sucess').sum()} linhas não possuem dados, indicando um\
     problema de integridade na qualidade de dados. Como não há como recuperar esses dados, eles serão removidos.
     '''),unsafe_allow_html=True)
 
-df_redux.drop(df_redux[df_redux['scrap_status'] != 'Scrap_Sucess'].index,inplace=True)
+df_steam.drop(df_steam[df_steam['scrap_status'] != 'Scrap_Sucess'].index,inplace=True)
 
 st.divider()
 
@@ -107,7 +107,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     Esses são os tipos de cada coluna do dataset nesse momento:
     '''),unsafe_allow_html=True)
     
-st.table(df_redux.dtypes)
+st.table(df_steam.dtypes)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
@@ -124,7 +124,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''),unsafe_allow_html=True)
 
 fig, ax = plt.subplots(figsize=(10,5))
-sb.histplot(df_redux,x=df_redux['type'], hue=df_redux['type'],ax=ax, alpha=1.0,shrink=0.85)
+sb.histplot(df_steam,x=df_steam['type'], hue=df_steam['type'],ax=ax, alpha=1.0,shrink=0.85)
 
 st.pyplot(fig)
 
@@ -134,7 +134,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     iremos remove-los também pois não são relevantes para o estudo.
     '''),unsafe_allow_html=True)
 
-df_redux.drop(df_redux[df_redux['type'] != 'game'].index,inplace=True)
+df_steam.drop(df_steam[df_steam['type'] != 'game'].index,inplace=True)
 
 st.divider()
 
@@ -144,7 +144,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''),unsafe_allow_html=True)
 
 fig, ax = plt.subplots(figsize=(10,5))
-sb.histplot(df_redux,x=df_redux['required_age'], hue=df_redux['required_age'],ax=ax, alpha=1.0,shrink=0.85)
+sb.histplot(df_steam,x=df_steam['required_age'], hue=df_steam['required_age'],ax=ax, alpha=1.0,shrink=0.85)
 
 st.pyplot(fig)
 
@@ -160,10 +160,10 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 st.divider()
 cols = st.columns([0.2,0.3,0.3])
 with cols[1]:
-    freePercent = (df_redux['is_free'].sum()/df_redux['is_free'].count())*100
+    freePercent = (df_steam['is_free'].sum()/df_steam['is_free'].count())*100
     st.metric(label="Jogos gratuitos", value=f'{freePercent:.2f}%')
 with cols[2]:
-    freePercent = ((df_redux['is_free'].count()-df_redux['is_free'].sum())/df_redux['is_free'].count())*100
+    freePercent = ((df_steam['is_free'].count()-df_steam['is_free'].sum())/df_steam['is_free'].count())*100
     st.metric(label="Jogos pagos", value=f'{freePercent:.2f}%')
 
 st.divider()
@@ -172,11 +172,11 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''
     Vamos ver quais desenvolvedores fizeram mais jogos
     '''),unsafe_allow_html=True)
-dev_df = df_redux['developers'].value_counts().nlargest(10).reset_index()
+dev_df = df_steam['developers'].value_counts().nlargest(10).reset_index()
 dev_df.columns = ['developers','count']
 st.table(dev_df)
 
-dev_df = df_redux['developers'].value_counts()
+dev_df = df_steam['developers'].value_counts()
 
 cols = st.columns([0.1,0.2,0.2,0.2])
 with cols[1]:
@@ -199,7 +199,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     Além disso é bem curioso que tenhamos 3309 de jogos \"Sem\" desenvolvedora, vamos ver quais são esses jogos.
     '''),unsafe_allow_html=True)
 
-st.dataframe(df_redux[df_redux['developers'] == ''])
+st.dataframe(df_steam[df_steam['developers'] == ''])
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
@@ -213,11 +213,11 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''
     Agora vamos dar uma olhada nas publicadoras
     '''),unsafe_allow_html=True)
-dev_df = df_redux['publishers'].value_counts().nlargest(10).reset_index()
+dev_df = df_steam['publishers'].value_counts().nlargest(10).reset_index()
 dev_df.columns = ['publishers','count']
 st.table(dev_df)
 
-dev_df = df_redux['publishers'].value_counts()
+dev_df = df_steam['publishers'].value_counts()
 
 cols = st.columns([0.1,0.2,0.2,0.2])
 with cols[1]:
@@ -244,7 +244,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''),unsafe_allow_html=True)
 
 fig, ax = plt.subplots(figsize=(10,5))
-sb.scatterplot(df_redux,x='positive', y='negative',hue='steamspy_owners',ax=ax)
+sb.scatterplot(df_steam,x='positive', y='negative',hue='steamspy_owners',ax=ax)
 #ax.tick_params(axis='x',rotation=45)
 ax.ticklabel_format(style='plain', axis='both')
 st.pyplot(fig)
@@ -267,7 +267,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''),unsafe_allow_html=True)
 
 fig, ax = plt.subplots(figsize=(10,5))
-sb.kdeplot(df_redux[df_redux['hltb_status'] == 'Found'],x=df_redux['hltb_main_story'],ax=ax,fill=True)
+sb.kdeplot(df_steam[df_steam['hltb_status'] == 'Found'],x=df_steam['hltb_main_story'],ax=ax,fill=True)
 st.pyplot(fig)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -277,8 +277,8 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''),unsafe_allow_html=True)
 
 fig, ax = plt.subplots(figsize=(10,5))
-sb.kdeplot(df_redux[(df_redux['hltb_status'] == 'Found') & (df_redux['hltb_main_story'] < 200) & 
-(df_redux['hltb_main_story'] > 0)],
+sb.kdeplot(df_steam[(df_steam['hltb_status'] == 'Found') & (df_steam['hltb_main_story'] < 200) & 
+(df_steam['hltb_main_story'] > 0)],
 x='hltb_main_story',ax=ax,fill=True)
 st.pyplot(fig)
 
@@ -289,7 +289,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 
 cols = st.columns([0.2,0.3,0.3])
 with cols[1]:
-    foundPercent = (df_redux[df_redux['hltb_status'] == 'Found']['hltb_status'].count()/df_redux['hltb_status'].count())*100
+    foundPercent = (df_steam[df_steam['hltb_status'] == 'Found']['hltb_status'].count()/df_steam['hltb_status'].count())*100
     st.metric(label="Jogos com dados no HTLB", value=f'{foundPercent:.2f}%')
 with cols[2]:
     notFoundPercent = 100-foundPercent
@@ -314,13 +314,13 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''),unsafe_allow_html=True)
 
 fig, ax = plt.subplots(figsize=(10,5))
-sb.histplot(df_redux,x='hltb_similarity', ax=ax, alpha=1.0,shrink=0.85,bins=10)
+sb.histplot(df_steam,x='hltb_similarity', ax=ax, alpha=1.0,shrink=0.85,bins=10)
 
 st.pyplot(fig)
 
 cols = st.columns([0.4,0.6])
 with cols[0]:
-    perfectSimilarity = (df_redux[df_redux['hltb_similarity'] == 1]['hltb_status'].count()/df_redux['hltb_similarity'].count())*100
+    perfectSimilarity = (df_steam[df_steam['hltb_similarity'] == 1]['hltb_status'].count()/df_steam['hltb_similarity'].count())*100
     st.metric(label="Jogos com nome \"perfeitamente\" similar", value=f'{perfectSimilarity:.2f}%')
     st.text('''
         No geral quando a similaridade do HLTB é igual a 1 temos uma 
@@ -335,8 +335,8 @@ with cols[0]:
         diferente do nome na coluna \'hltb_name\'.
         ''')
 with cols[1]:
-    st.dataframe(df_redux[
-        (df_redux['hltb_similarity'] == 1) & (df_redux['name'].str.lower() != df_redux['hltb_name'].str.lower())
+    st.dataframe(df_steam[
+        (df_steam['hltb_similarity'] == 1) & (df_steam['name'].str.lower() != df_steam['hltb_name'].str.lower())
         ][['hltb_similarity','hltb_name','name']],use_container_width=True,hide_index=True)
 
 st.divider()
@@ -349,9 +349,9 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     Na próxima página iremos preparar os dados para a modelagem.
     '''),unsafe_allow_html=True)
     
-st.dataframe(df_redux,hide_index=True,height=250)
+st.dataframe(df_steam,hide_index=True,height=250)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
-    O dataset atualmente possui {df_redux.shape[0]} linhas e {df_redux.shape[1]} colunas.
+    O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
     '''),unsafe_allow_html=True)
