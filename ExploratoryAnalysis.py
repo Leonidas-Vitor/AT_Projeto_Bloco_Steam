@@ -41,9 +41,10 @@ fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
 i  = 0
 for r in range(x_plots):
     for c in range(y_plots):
-        if df_steam_numerics.columns[i] == 'total_reviews':
+        colName = df_steam_numerics.columns[i]
+        if colName == 'total_reviews':
             i += 1
-        sb.boxplot(data=df_steam_numerics[i],  ax=axs[r, c], orient='h')
+        sb.boxplot(data=df_steam_numerics[colName],  ax=axs[r, c], orient='h',color=sb.color_palette()[i % len(sb.color_palette())])
         i+= 1
         
 plt.subplots_adjust(wspace=0.3, hspace=0.3)
