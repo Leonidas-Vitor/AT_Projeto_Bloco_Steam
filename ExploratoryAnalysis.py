@@ -34,6 +34,17 @@ df_steam_numerics = df_steam.drop(columns=['name','id','release_date','tags','ma
 x_plots = 2
 y_plots = 3
 
+st.subheader('Filtros',divider=True)
+
+st.markdown(at_lib.GetBasicTextMarkdown(25,
+    '''
+    Aqui estão alguns controladores para filtrar os dados, removendo outliers de cada coluna. Mais abaixo estão os gráficos\
+    que permitem visualizar os dados filtrados.
+    '''),unsafe_allow_html=True)
+
+min_max_price = st.slider("Faixa de preço:", value=(0, 200))
+
+df_steam_numerics = df_steam_numerics[(df_steam_numerics['price'] >= min_max_price[0]) & (df_steam_numerics['price'] <= min_max_price[1])]
 st.subheader('Boxplot',divider=True)
 
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
@@ -45,7 +56,7 @@ for r in range(x_plots):
         if colName == 'total_reviews':
             i = i + 1
             colName = df_steam_numerics.columns[i]
-        sb.boxplot(data=df_steam_numerics[colName],  ax=axs[r, c], orient='h',color=sb.color_palette()[i % len(sb.color_palette())])
+        sb.boxplot(data=df_steam_numerics[colName],  ax=axs[r, c], orient='v',color=sb.color_palette()[i % len(sb.color_palette())])
         i = i + 1
         
 plt.subplots_adjust(wspace=0.3, hspace=0.3)
@@ -59,8 +70,9 @@ for r in range(x_plots):
     for c in range(y_plots):
         if df_steam_numerics.columns[i] == 'total_reviews':
             i += 1
-        sb.regplot(data=df_steam_numerics, x=df_steam_numerics.columns[i], y='total_reviews', ax=axs[r, c], line_kws={'color':'red'})
-        i+= 1
+        sb.regplot(data=df_steam_numerics, x=df_steam_numerics.columns[i], y='total_reviews', ax=axs[r, c],
+        color= sb.color_palette()[i % len(sb.color_palette())]line_kws={'color':'red'})
+        i += 1
         
 plt.subplots_adjust(wspace=0.3, hspace=0.3)
 st.pyplot(fig)
