@@ -35,22 +35,24 @@ x_plots = 3
 y_plots = 3
 st.subheader('Boxplot',divider=True)
 
-fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 5))
+fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
 
 for i,col in enumerate(df_steam_numerics.columns):
-    sb.boxplot(data=df_steam_numerics[col], ax=axs[i//x_plots,i%y_plots])
+    sb.boxplot(data=df_steam_numerics[col], ax=axs[i//x_plots,i%y_plots],color=sb.color_palette()[index % len(palette)]
 
 plt.subplots_adjust(wspace=1, hspace=1)
 st.pyplot(fig)
+st.subheader('Dispersão',divider=True)
 
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 10))
 
 for index, col in enumerate(df_steam_numerics.columns):
     if (col == 'total_reviews'):
         continue
-    sb.regplot(data=df_steam_numerics, x=col, y='total_reviews', ax=axs[index//x_plots, index%y_plots], line_kws={'color':'red'})
+    sb.regplot(data=df_steam_numerics, x=col, y='total_reviews', ax=axs[index%x_plots, index//y_plots], line_kws={'color':'blue'})
 plt.subplots_adjust(wspace=0.3, hspace=0.3)
 st.pyplot(fig)
+st.subheader('Mapa de calor',divider=True)
 fig, ax = plt.subplots(figsize=(15, 5))
 
 nOrder = list(df_steam_numerics.columns)
@@ -61,7 +63,7 @@ df_steam_numerics = df_steam_numerics[nOrder]
 
 df_steam_corr = df_steam_numerics.corr()
 sb.heatmap(df_steam_corr, annot=True, fmt='.2f',cmap=sb.color_palette("coolwarm", as_cmap=True), ax=ax, mask=np.triu(df_steam_corr, k=1))
-ax.axhline(6, color='black', linewidth=2)
-ax.axhline(7, color='black', linewidth=4)
+ax.axhline(6, color='white', linewidth=2)
+ax.axhline(7, color='white', linewidth=4)
 
 st.pyplot(fig)
