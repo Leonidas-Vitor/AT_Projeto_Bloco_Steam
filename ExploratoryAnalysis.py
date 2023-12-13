@@ -32,29 +32,29 @@ df_steam_numerics = df_steam.drop(columns=['name','id','release_date','tags','ma
 
 
 x_plots = 3
-y_plots = 3
+y_plots = 2
 
 st.subheader('Boxplot',divider=True)
 
-palette = st.session_state['sb_theme']['palette']
+palette = sb.color_palette()
 st.text(palette)
 
 
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
 
 for i,col in enumerate(df_steam_numerics.columns):
-    sb.boxplot(data=df_steam_numerics[col], ax=axs[i//x_plots,i%y_plots])
+    sb.boxplot(data=df_steam_numerics[col], ax=axs[i//x_plots,i%y_plots],color=sb.color_palette()[i % len(sb.color_palette())])
 
-plt.subplots_adjust(wspace=1, hspace=1)
+plt.subplots_adjust(wspace=0.3, hspace=0.3)
 st.pyplot(fig)
 st.subheader('Dispersão',divider=True)
 
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 10))
 
-for index, col in enumerate(df_steam_numerics.columns):
+for i, col in enumerate(df_steam_numerics.columns):
     if (col == 'total_reviews'):
         continue
-    sb.regplot(data=df_steam_numerics, x=col, y='total_reviews', ax=axs[index%x_plots, index//y_plots], line_kws={'color':'blue'})
+    sb.regplot(data=df_steam_numerics, x=col, y='total_reviews', ax=axs[i//x_plots, i%y_plots], line_kws={'color':'blue'})
 plt.subplots_adjust(wspace=0.3, hspace=0.3)
 st.pyplot(fig)
 st.subheader('Mapa de calor',divider=True)
