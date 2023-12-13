@@ -53,7 +53,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 forbiddenTags = ['Animation & Modeling','Game Development','Video Production', 'Utilities','Photo Editing','Software','VR']
 df_steam['ContainForbiddenTag'] = df_steam['tags'].apply(lambda x: any(tag in x for tag in forbiddenTags))
 
-cols = st.columns(0.7,0.3)
+cols = st.columns([0.7,0.3])
 with cols[0]:
     st.markdown(at_lib.GetBasicTextMarkdown(15,
         f'''
