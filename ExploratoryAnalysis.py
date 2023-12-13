@@ -85,9 +85,9 @@ df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_reviews'] >= min
 
 cols = st.columns(3)
 with cols[0]:
-    min_max_duration = st.slider("Duração total:", min_value =df_steam['total_duration'].min(), max_value =df_steam['total_duration'].max(),value=(1,50))
+    min_max_duration = st.slider("Duração total:", min_value =df_steam['total_duration'].min(), max_value =df_steam['total_duration'].max(),value=(1.0,50.0))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_duration'] >= min_max_duration[0]) & (df_steam_numerics['total_duration'] <= min_max_duration[1])]
-    min_max_positive_reviews_percent = st.slider("Porcentagem de reviews positivas:", min_value =df_steam['positive_reviews_percent'].min(), max_value =df_steam['positive_reviews_percent'].max(),value=(0,'50000'))
+    min_max_positive_reviews_percent = st.slider("Porcentagem de reviews positivas:", min_value =df_steam['positive_reviews_percent'].min(), max_value =df_steam['positive_reviews_percent'].max(),value=(0.0,1.0))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['positive_reviews_percent'] >= min_max_positive_reviews_percent[0]) & (df_steam_numerics['positive_reviews_percent'] <= min_max_positive_reviews_percent[1])]
 with cols[1]:
     min_max_commercialization_days = st.slider("Dias de comercialização:", min_value =df_steam['commercialization_days'].min(), max_value =df_steam['commercialization_days'].max(),value=(0,1095))
@@ -95,7 +95,7 @@ with cols[1]:
     min_max_total_supported_languages = st.slider("Número de idiomas suportados:", min_value =df_steam['total_supported_languages'].min(), max_value =df_steam['total_supported_languages'].max(),value=(1,40))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_supported_languages'] >= min_max_total_supported_languages[0]) & (df_steam_numerics['total_supported_languages'] <= min_max_total_supported_languages[1])]
 with cols[2]:
-    min_max_price = st.slider("Faixa de preço:", min_value =df_steam['price'].min(), max_value =df_steam['price'].max(),value=(0,70))
+    min_max_price = st.slider("Faixa de preço:", min_value =df_steam['price'].min(), max_value =df_steam['price'].max(),value=(0.9,70.0))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['price'] >= min_max_price[0]) & (df_steam_numerics['price'] <= min_max_price[1])]
     min_max_total_achievements = st.slider("Número de conquistas:", min_value =df_steam['total_achievements'].min(), max_value =df_steam['total_achievements'].max(),value=(0,210))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_achievements'] >= min_max_total_achievements[0]) & (df_steam_numerics['total_achievements'] <= min_max_total_achievements[1])]
