@@ -43,10 +43,10 @@ for r in range(x_plots):
     for c in range(y_plots):
         colName = df_steam_numerics.columns[i]
         if colName == 'total_reviews':
-            i += 1
+            i = i + 1
             colName = df_steam_numerics.columns[i]
         sb.boxplot(data=df_steam_numerics[colName],  ax=axs[r, c], orient='h',color=sb.color_palette()[i % len(sb.color_palette())])
-        i += 1
+        i = i + 1
         
 plt.subplots_adjust(wspace=0.3, hspace=0.3)
 st.pyplot(fig)
