@@ -130,8 +130,8 @@ st.pyplot(fig)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
-    Podemos observar que temos muitas DLCs e demos, além de outros tipos de apps que não são jogos ({(df_steam['type'] != 'game').sum()}) e portanto\
-    iremos remove-los também pois não são relevantes para o estudo.
+    Podemos observar que temos muitas DLCs e demos, além de outros tipos de apps que não são jogos ({(df_steam['type'] != 'game').sum()})\
+    e portanto\ iremos remove-los também pois não são relevantes para o estudo.
     '''),unsafe_allow_html=True)
 
 df_steam.drop(df_steam[df_steam['type'] != 'game'].index,inplace=True)
@@ -145,7 +145,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
 
 fig, ax = plt.subplots(figsize=(10,5))
 sb.histplot(df_steam,x=df_steam['required_age'], hue=df_steam['required_age'],ax=ax, alpha=1.0,shrink=0.85)
-ax.legend(loc='center right', bbox_to_anchor=(1.35, 0.9), ncol=1)
+ax.legend(loc='upper right', bbox_to_anchor=(1.35, 0.9), ncol=1)
 st.pyplot(fig)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -364,3 +364,10 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
     O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
     '''),unsafe_allow_html=True)
+
+st.download_button(
+    label="Baixar o dataset preparado",
+    data=df_steam.to_csv(index=False),
+    file_name='SteamDatasetForStreamlitInspected.csv',
+    mime='text/csv',
+)
