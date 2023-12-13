@@ -34,10 +34,16 @@ st.divider()
 x_plots = 2
 y_plots = 3
 
+st.subheader('Botões para reiniciar ',divider=True)
+
+cols = st.columns(2)
+with cols[0]:
+    if st.button('Reiniciar filtros'):
+        st.experimental_rerun()
 st.subheader('Filtros categóricos',divider=True)
 
 tag = st.selectbox(
-    'Escolha um gênero de jogo',(
+    'Escolha uma tag válida que melhor descreva o jogo que deseja estimar o faturamento',(
     'Roguelike Deckbuilder','4X',
     'Simulation','Management', #=> Esses dois são juntos
     'Open World Survival Craft','City Builder','RPG','Rogue-like','Metroidvania','Dungeon Crawler','Souls-like',
@@ -57,10 +63,10 @@ with cols[0]:
     sp = st.checkbox('Incluir jogos com single-player', value=True)
     df_steam = df_steam[df_steam['hasSingleplayer'] == sp]
 with cols[1]:
-    mp = st.checkbox('Incluir jogos com multi-player', value=True)
+    mp = st.checkbox('Incluir jogos com multi-player', value=False)
     df_steam = df_steam[df_steam['hasMultiplayer'] == mp]
 with cols[2]:
-    cp =st.checkbox('Incluir jogos com co-op', value=True)
+    cp =st.checkbox('Incluir jogos com co-op', value=False)
     df_steam = df_steam[df_steam['hasCoop'] == cp]
 
 
@@ -73,24 +79,24 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     que permitem visualizar os dados filtrados. 
     '''),unsafe_allow_html=True)
 
-min_max_total_reviews = st.slider("Número total de reviews:", value=(df_steam_numerics['total_reviews'].min(), df_steam_numerics['total_reviews'].max()))
+min_max_total_reviews = st.slider("Número total de reviews:", min_value =df_steam_numerics['total_reviews'].min(), max_value =df_steam_numerics['total_reviews'].max(),value=50000)
 df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_reviews'] >= min_max_total_reviews[0]) & (df_steam_numerics['total_reviews'] <= min_max_total_reviews[1])]
 
 cols = st.columns(3)
 with cols[0]:
-    min_max_duration = st.slider("Duração total:", value=(df_steam_numerics['total_duration'].min(), df_steam_numerics['total_duration'].max()))
+    min_max_duration = st.slider("Duração total:", value=(df_steam['total_duration'].min(), df_steam['total_duration'].max()))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_duration'] >= min_max_duration[0]) & (df_steam_numerics['total_duration'] <= min_max_duration[1])]
-    min_max_positive_reviews_percent = st.slider("Porcentagem de reviews positivas:", value=(df_steam_numerics['positive_reviews_percent'].min(), df_steam_numerics['positive_reviews_percent'].max()))
+    min_max_positive_reviews_percent = st.slider("Porcentagem de reviews positivas:", value=(df_steam['positive_reviews_percent'].min(), df_steam['positive_reviews_percent'].max()))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['positive_reviews_percent'] >= min_max_positive_reviews_percent[0]) & (df_steam_numerics['positive_reviews_percent'] <= min_max_positive_reviews_percent[1])]
 with cols[1]:
-    min_max_commercialization_days = st.slider("Dias de comercialização:", value=(df_steam_numerics['commercialization_days'].min(), df_steam_numerics['commercialization_days'].max()))
+    min_max_commercialization_days = st.slider("Dias de comercialização:", value=(df_steam['commercialization_days'].min(), df_steam['commercialization_days'].max()))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['commercialization_days'] >= min_max_commercialization_days[0]) & (df_steam_numerics['commercialization_days'] <= min_max_commercialization_days[1])]
-    min_max_total_supported_languages = st.slider("Número de idiomas suportados:", value=(df_steam_numerics['total_supported_languages'].min(), df_steam_numerics['total_supported_languages'].max()))
+    min_max_total_supported_languages = st.slider("Número de idiomas suportados:", value=(df_steam['total_supported_languages'].min(), df_steam['total_supported_languages'].max()))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_supported_languages'] >= min_max_total_supported_languages[0]) & (df_steam_numerics['total_supported_languages'] <= min_max_total_supported_languages[1])]
 with cols[2]:
-    min_max_price = st.slider("Faixa de preço:", value=(df_steam_numerics['price'].min(), df_steam_numerics['price'].max()))
+    min_max_price = st.slider("Faixa de preço:", value=(df_steam['price'].min(), df_steam['price'].max()))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['price'] >= min_max_price[0]) & (df_steam_numerics['price'] <= min_max_price[1])]
-    min_max_total_achievements = st.slider("Número de conquistas:", value=(df_steam_numerics['total_achievements'].min(), df_steam_numerics['total_achievements'].max()))
+    min_max_total_achievements = st.slider("Número de conquistas:", value=(df_steam['total_achievements'].min(), df_steam['total_achievements'].max()))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_achievements'] >= min_max_total_achievements[0]) & (df_steam_numerics['total_achievements'] <= min_max_total_achievements[1])]
 
 st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Quantidade de jogos restantes no dataset: {df_steam_numerics.shape[0]}'''),unsafe_allow_html=True)
