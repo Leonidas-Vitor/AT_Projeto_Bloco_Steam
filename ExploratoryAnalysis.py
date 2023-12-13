@@ -39,12 +39,27 @@ st.subheader('Filtros',divider=True)
 st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''
     Aqui estão alguns controladores para filtrar os dados, removendo outliers de cada coluna. Mais abaixo estão os gráficos\
-    que permitem visualizar os dados filtrados.
+    que permitem visualizar os dados filtrados. 
     '''),unsafe_allow_html=True)
-
-min_max_price = st.slider("Faixa de preço:", value=(0, 200))
-
-df_steam_numerics = df_steam_numerics[(df_steam_numerics['price'] >= min_max_price[0]) & (df_steam_numerics['price'] <= min_max_price[1])]
+#É importante que essa filtragem seja feita já pensando no tipo de jogo que se\
+ #   quer prever, por exemplo, RPGs tendem a ter uma duração maior que jogos de plataforma, portanto eliminar os outliers superiores\
+   # pode não ser uma ideia adequada cas
+cols = st.columns(3)
+with cols[0]:
+    min_max_duration = st.slider("Duração total:", value=(df_steam_numerics['total_duration'].min(), df_steam_numerics['total_duration'].max()))
+    df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_duration'] >= min_max_duration[0]) & (df_steam_numerics['total_duration'] <= min_max_duration[1])]
+    min_max_positive_reviews_percent = st.slider("Porcentagem de reviews positivas:", value=(df_steam_numerics['positive_reviews_percent'].min(), df_steam_numerics['positive_reviews_percent'].max()))
+    df_steam_numerics = df_steam_numerics[(df_steam_numerics['positive_reviews_percent'] >= min_max_positive_reviews_percent[0]) & (df_steam_numerics['positive_reviews_percent'] <= min_max_positive_reviews_percent[1])]
+with cols[1]:
+    min_max_commercialization_days = st.slider("Dias de comercialização:", value=(df_steam_numerics['commercialization_days'].min(), df_steam_numerics['commercialization_days'].max()))
+    df_steam_numerics = df_steam_numerics[(df_steam_numerics['commercialization_days'] >= min_max_commercialization_days[0]) & (df_steam_numerics['commercialization_days'] <= min_max_commercialization_days[1])]
+    min_max_total_supported_languages = st.slider("Número de idiomas suportados:", value=(df_steam_numerics['total_supported_languages'].min(), df_steam_numerics['total_supported_languages'].max()))
+    df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_supported_languages'] >= min_max_total_supported_languages[0]) & (df_steam_numerics['total_supported_languages'] <= min_max_total_supported_languages[1])]
+with cols[2]:
+    min_max_price = st.slider("Faixa de preço:", value=(df_steam_numerics['price'].min(), df_steam_numerics['price'].max()))
+    df_steam_numerics = df_steam_numerics[(df_steam_numerics['price'] >= min_max_price[0]) & (df_steam_numerics['price'] <= min_max_price[1])]
+    min_max_total_achievements = st.slider("Número de conquistas:", value=(df_steam_numerics['total_achievements'].min(), df_steam_numerics['total_achievements'].max()))
+    df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_achievements'] >= min_max_total_achievements[0]) & (df_steam_numerics['total_achievements'] <= min_max_total_achievements[1])]
 st.subheader('Boxplot',divider=True)
 
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
