@@ -94,7 +94,32 @@ with st.expander('Apps com tags indevidas'):
 df_steam = df_steam[df_steam['ContainForbiddenTag']==False]
 st.subheader('Remoção de playtests',divider=True)
 
-st.dataframe(df_steam[(df_steam['name'].apply(lambda n: 'Playtest' not in n if n != None else True))][['name','steam_appid','categories']],height=250,use_container_width=True)
+st.dataframe(df_steam[(df_steam['name'].apply(lambda n: 'Playtest' in n if n != None else False))][['name','steam_appid','categories']],hide_index=True,height=250,use_container_width=True)
+st.subheader('Preenchendo as durações ausentes',divider=True)
+
+st.markdown(at_lib.GetBasicTextMarkdown(20,
+    '''
+    Existe uma grande ausência de dados de duração, para resolver esse problema iremos inferir os dados faltantes\
+    através da mediana da duração dos jogos do mesmo gênero. Jogos que tiverem uma similaridade de nome menor que\
+    0.9 também serão substituídos pela mediana do gênero, já que seus dados não são confiáveis.
+    '''),unsafe_allow_html=True)
+
+df_duration_median = df_steam[(df_steam['total_duration'] > 0) & (~np.isnan(df_steam['total_duration'])) &
+    (df_steam['hltb_similarity'] > 0.9)].copy()
+
+df_duration_median = df_duration_median[['main_genre','total_duration']]
+df_duration_median = df_duration_median.groupby('main_genre').median().reset_index()
+
+st.dataframe(df_duration_median,use_container_width=True)
+
+def FillDuration(row):
+    if (row['total_duration'] == 0 or np.isnan(row['total_duration']) or type(row['total_duration']) == str):
+        row['total_duration'] = df_duration_median[df_duration_median['main_genre'] == row['main_genre']]['total_duration'].values[0]
+    return row
+
+df_steam = df_steam.apply(FillDuration,axis=1)
+
+df_steam.drop(columns=['hltb_similarity'],inplace=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''

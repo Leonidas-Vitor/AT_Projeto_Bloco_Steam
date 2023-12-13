@@ -427,28 +427,6 @@ df_steam['self_published_percent'] = df_steam.apply(lambda x: Is_sef_published(x
 df_steam['developers'] = df_steam['developers'].apply(lambda x: ', '.join(x) if isinstance(x, list) else x)
 
 st.dataframe(df_steam[['name','developers','publishers','self_published_percent']].sample(5),use_container_width=True)
-#----------- Duração
-st.markdown(at_lib.GetBasicTextMarkdown(20,
-    '''
-    Existe uma grande ausência de dados de duração, para resolver esse problema iremos inferir os dados faltantes\
-    através da mediana da duração dos jogos do mesmo gênero. Jogos que tiverem uma similaridade de nome menor que\
-    0.9 também serão substituídos pela mediana do gênero, já que seus dados não são confiáveis.
-    '''),unsafe_allow_html=True)
-
-df_duration_median = df_steam[(df_steam['hltb_main_story'] > 0) & (~np.isnan(df_steam['hltb_main_story'])) &
-    (df_steam['hltb_similarity'] > 0.9)].copy()
-
-df_duration_median = df_duration_median[['main_genre','hltb_main_story']]
-df_duration_median = df_duration_median.groupby('main_genre').median().reset_index()
-
-st.dataframe(df_duration_median,use_container_width=True)
-
-def FillDuration(row):
-    if (row['hltb_main_story'] == 0 or np.isnan(row['hltb_main_story']) or type(row['hltb_main_story']) == str):
-        row['hltb_main_story'] = df_duration_median[df_duration_median['main_genre'] == row['main_genre']]['hltb_main_story'].values[0]
-    return row
-
-df_steam = df_steam.apply(FillDuration,axis=1)
 
 #----------- Conquistas
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -474,7 +452,7 @@ df_steam.rename(columns={'steam_appid':'id','hltb_main_story':'total_duration'},
 st.divider()
 
 df_steam.drop(columns=['is_free','genres','supported_languages','categories','positive','negative',
-    'developers','publishers','achievements','hltb_similarity','steamspy_owners',''],inplace=True)
+    'developers','publishers','achievements','steamspy_owners',''],inplace=True)
 
 
 df_steam['id'] = df_steam['id'].astype(int)
