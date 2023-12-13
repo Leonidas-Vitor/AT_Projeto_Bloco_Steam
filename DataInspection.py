@@ -129,8 +129,8 @@ sb.histplot(df_steam,x=df_steam['type'], hue=df_steam['type'],ax=ax, alpha=1.0,s
 st.pyplot(fig)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
-    '''
-    Podemos observar que temos muitas DLCs e demos, além de outros tipos de apps que não são jogos e portanto\
+    f'''
+    Podemos observar que temos muitas DLCs e demos, além de outros tipos de apps que não são jogos ({(df_steam['type'] != 'game').sum()}) e portanto\
     iremos remove-los também pois não são relevantes para o estudo.
     '''),unsafe_allow_html=True)
 
@@ -145,7 +145,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
 
 fig, ax = plt.subplots(figsize=(10,5))
 sb.histplot(df_steam,x=df_steam['required_age'], hue=df_steam['required_age'],ax=ax, alpha=1.0,shrink=0.85)
-
+ax.legend(loc='center right', bbox_to_anchor=(1.35, 0.9), ncol=1)
 st.pyplot(fig)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -247,6 +247,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
 fig, ax = plt.subplots(figsize=(10,5))
 sb.scatterplot(df_steam,x='positive', y='negative',hue='steamspy_owners',ax=ax)
 #ax.tick_params(axis='x',rotation=45)
+ax.legend(loc='upper right', bbox_to_anchor=(1.35, 0.9), ncol=1)
 ax.ticklabel_format(style='plain', axis='both')
 st.pyplot(fig)
 
@@ -262,8 +263,9 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
 
 fig, ax = plt.subplots(figsize=(10,5))
 sb.scatterplot(df_steam,x=df_steam[df_steam['positive'] < 2000000]['positive'], y='negative',hue='steamspy_owners',ax=ax)
-
+ax.set_title('Gráfico com a remoção de alguns outliers')
 ax.ticklabel_format(style='plain', axis='both')
+ax.legend(loc='upper right', bbox_to_anchor=(1.35, 0.9), ncol=1)
 st.pyplot(fig)
 
 st.divider()
@@ -353,7 +355,7 @@ st.divider()
 
 st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''
-    Na próxima página iremos preparar os dados para a modelagem.
+    Na próxima página iremos começar a refinar os dados.
     '''),unsafe_allow_html=True)
     
 st.dataframe(df_steam,hide_index=True,height=250)
