@@ -17,7 +17,7 @@ st.text(
     inadequados para gerar um modelo de regressão linear adequado. 
     ''')
 
-df_steam = pd.read_csv('SteamDatasetForStreamlitClean.csv',engine='pyarrow')
+df_steam = pd.read_csv('SteamDatasetForStreamlitPrepared.csv',engine='pyarrow')
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
@@ -27,4 +27,3 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 st.dataframe(df_steam,hide_index=True,height=250)
 
 st.divider()
-st.subheader('Remoção de não jogos',divider=True)

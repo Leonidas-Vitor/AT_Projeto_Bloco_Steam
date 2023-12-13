@@ -16,6 +16,7 @@ show_pages(
 #        Page('DataAcquisition.py','Aquisição de dados',":building_construction:"),
         Page('DataInspection.py','Conhecendo a base de dados',":mag:"),
         Page('DataPreparation.py','Preparação dos dados',":wrench:"),
+        Page('DataCleaning.py','Limpeza dos dados',':broom:'),
         Page('ExploratoryAnalysis.py','Análise exploratória',":bar_chart:"),
         Page('LinearRegression.py','Regressão linear',":bulb:"),
     ]

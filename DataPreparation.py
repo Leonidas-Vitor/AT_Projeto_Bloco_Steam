@@ -13,8 +13,10 @@ st.header('Preparação dos dados',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''
-    Agora iremos preparar os dados para a modelagem, para isso iremos criar novas colunas, remover colunas\
-    que não serão mais utilizadas e tratar os dados com problemas de qualidade.
+    Agora iremos estruturar os dados de forma que possam ser melhor trabalhados e filtrados.\
+    Para isso iremos criar novas colunas, remover colunas que não serão mais utilizadas e tratar\
+    os dados com problemas de qualidade mais evidente, na próxima página continuaremos a tratar de\
+    problemas de qualidade.
     '''),unsafe_allow_html=True)
 
 
@@ -32,7 +34,7 @@ st.dataframe(df_steam,hide_index=True,height=250)
 
 st.divider()
 
-cols = st.columns([0.5,0.5])
+cols = st.columns([0.4,0.6])
 with cols[0]:
     st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
@@ -77,17 +79,13 @@ df_steam.drop(columns=['scrap_status','type','required_age','spy_status','hltb_s
 
 st.divider()
 
-st.markdown(at_lib.GetBasicTextMarkdown(25,
-    '''
-    Agora removeremos diversas linhas que não atendem as premissas do estudo.
-    '''),unsafe_allow_html=True)
+#st.markdown(at_lib.GetBasicTextMarkdown(25,
+#    '''
+#    Agora removeremos diversas linhas que não atendem as premissas do estudo.
+#    '''),unsafe_allow_html=True)
 
-#Convertendo a coluna release_date para um dicionário
-#try:
-df_steam['release_date'] = df_steam['release_date'].apply(ast.literal_eval)
-#except Exception as e:
-    #O dicionário já foi convertido
-#    pass
+#%%writefile -a 'C:\Users\leoni\OneDrive\Documentos\AT_Projeto_Bloco_Streamlit\DataPreparation.py'
+st.subheader('Remoção de alguns apps indesejados',divider=True)
 
 cols = st.columns([0.5,0.2,0.3])
 #É Gratuito?
@@ -113,6 +111,7 @@ with cols[0]:
     Jogos não lançados não podem ser analisados, pois ainda não foram comercializados
     '''),unsafe_allow_html=True)
 with cols[2]:
+    df_steam['release_date'] = df_steam['release_date'].apply(ast.literal_eval)
     notLaunched = df_steam[(df_steam['release_date'].str['coming_soon'] == True) | (df_steam['release_date'].str['date'] == '')]['steam_appid'].count()
     notLaunchedPercent = (notLaunched/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{notLaunched}', delta=f'-{notLaunchedPercent:.2f}%')
@@ -150,6 +149,7 @@ with cols[2]:
     notPricePercent = (noPrice/df_steam['steam_appid'].count())*100
     st.metric(label="Jogos removidos", value=f'{noPrice}', delta=f'-{notPricePercent:.2f}%')
 
+st.table(df_steam[df_steam['price_overview'] == ''].sample(5),use_container_width=True)
 df_steam = df_steam[df_steam['price_overview'] != '']
 
 st.divider()
@@ -159,7 +159,7 @@ with cols[0]:
     st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
     Algumas linhas não tinham dados na coluna categories e após uma breve investigação foi constatado que são ferramentas\
-    para desenvolvedores e não jogos, portanto serão removidos.
+    para desenvolvedores, apps temporários (Playtest) e jogos sem uma data de lançamento definida, portanto serão removidos.
     '''),unsafe_allow_html=True)
 with cols[2]:
     noCat = df_steam[df_steam['categories'] == '']['steam_appid'].count()
@@ -477,7 +477,7 @@ st.table(df_steam.set_index('id').describe())
 st.download_button(
     label="Baixar o dataset preparado",
     data=df_steam.to_csv(index=False),
-    file_name='SteamDatasetForStreamlitClean.csv',
+    file_name='SteamDatasetForStreamlitPrepared.csv',
     mime='text/csv',
 )
 #st.table(df_steam.dtypes)
