@@ -203,8 +203,9 @@ st.dataframe(df_steam[df_steam['developers'] == ''])
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
-    Olhando alguns exemplares diretamente na loja steam só é possível inferir que por algum motivo o desenvoveldor\
-    preferiu não ser identificado, e não há como saber o motivo.
+    Observando os exemplares acima e fazendo uma busca de alguns deles diretamente na loja steam pode-se constatar que;
+    - Apps com \'Playtest\' no nome redirecionam para um outro app, provavelmente esses sãos appids temporários para algum uso específico.
+    - Existem alguns appids sem a palavra \'Playtest\' no nome, dentro dos que foram observados eles não foram lançados ainda.
     '''),unsafe_allow_html=True)
 
 st.divider()
@@ -258,6 +259,12 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     Também é possível observar uma boa correlação entre a quantidade de avaliações e a quantidade de proprietários,\
     o que fortalece a premissa de que há uma boa relação entre a quantidade de avaliações e as vendas de um jogo.
     '''),unsafe_allow_html=True)
+
+fig, ax = plt.subplots(figsize=(10,5))
+sb.scatterplot(df_steam,x=df_steam[df_steam['positive'] < 2000000]['positive'], y='negative',hue='steamspy_owners',ax=ax)
+
+ax.ticklabel_format(style='plain', axis='both')
+st.pyplot(fig)
 
 st.divider()
 

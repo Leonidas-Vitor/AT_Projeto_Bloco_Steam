@@ -462,7 +462,7 @@ df_steam.rename(columns={'steam_appid':'id','hltb_main_story':'total_duration'},
 st.divider()
 
 df_steam.drop(columns=['is_free','genres','supported_languages','categories','positive','negative',
-    'developers','publishers','achievements','hltb_similarity','steamspy_owners'],inplace=True)
+    'developers','publishers','achievements','hltb_similarity','steamspy_owners',''],inplace=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
