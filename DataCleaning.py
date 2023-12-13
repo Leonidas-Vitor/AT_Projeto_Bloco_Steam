@@ -40,9 +40,9 @@ forbiddenTags = ['Animation & Modeling','Game Development','Design & Illustratio
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
-    **Lista de tags indevidas:**\n
-    {forbiddenTags}\n
-    A tag VR foi incluída pois não estamos interessados em jogos de realidade virtual para esse projeto, então aproveitamos\
+    Lista de tags indevidas:\n
+    {forbiddenTags}
+    \nA tag VR foi incluída pois não estamos interessados em jogos de realidade virtual para esse projeto, então aproveitamos\
     a operação para já retirar esse tipo de app do dataset.
     '''),unsafe_allow_html=True)
 
@@ -50,11 +50,20 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 
 df_steam['ContainForbiddenTag'] = df_steam['tags'].apply(lambda x: any(tag in x for tag in forbiddenTags))
 with st.expander('Apps com tags indevidas'):
-    st.dataframe(df_steam[df_steam['ContainForbiddenTag']==True],hide_index=True,height=250)
+    st.dataframe(df_steam[df_steam['ContainForbiddenTag']==True][['name','id','tags']],hide_index=True,height=250)
 
 forbiddenTagCount = df_steam[df_steam['ContainForbiddenTag']==True]['id'].count()
 forbiddenTagPercent = (forbiddenTagCount/df_steam['id'].count())*100
 st.metric(label="Jogos removidos", value=f'{forbiddenTagCount}', delta=f'-{forbiddenTagPercent:.2f}%')
+
+st.markdown(at_lib.GetBasicTextMarkdown(20,
+    f'''
+    O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
+    '''),unsafe_allow_html=True)
+
+st.dataframe(df_steam,hide_index=True,height=250)
+
+st.table(df_steam.set_index('id').describe())
 
 st.download_button(
     label="Baixar o dataset preparado",
