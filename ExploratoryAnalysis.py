@@ -27,6 +27,8 @@ st.dataframe(df_steam,hide_index=True,height=250)
 
 st.divider()
 
+st.dataframe(df_steam.describe(),height=250,hide_index=True)
+
 #nCols = ['total_duration','total_achievements','total_supported_languages','positive_reviews_percent','price', 'self_published_percent','commercialization_days']
 df_steam_numerics = df_steam.drop(columns=['name','id','release_date','tags','main_genre','hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent'])
 
@@ -44,6 +46,10 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
 #É importante que essa filtragem seja feita já pensando no tipo de jogo que se\
  #   quer prever, por exemplo, RPGs tendem a ter uma duração maior que jogos de plataforma, portanto eliminar os outliers superiores\
    # pode não ser uma ideia adequada cas
+
+min_max_total_reviews = st.slider("Número total de reviews:", value=(df_steam_numerics['total_reviews'].min(), df_steam_numerics['total_reviews'].max()))
+df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_reviews'] >= min_max_total_reviews[0]) & (df_steam_numerics['total_reviews'] <= min_max_total_reviews[1])]
+
 cols = st.columns(3)
 with cols[0]:
     min_max_duration = st.slider("Duração total:", value=(df_steam_numerics['total_duration'].min(), df_steam_numerics['total_duration'].max()))
@@ -60,6 +66,8 @@ with cols[2]:
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['price'] >= min_max_price[0]) & (df_steam_numerics['price'] <= min_max_price[1])]
     min_max_total_achievements = st.slider("Número de conquistas:", value=(df_steam_numerics['total_achievements'].min(), df_steam_numerics['total_achievements'].max()))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_achievements'] >= min_max_total_achievements[0]) & (df_steam_numerics['total_achievements'] <= min_max_total_achievements[1])]
+
+st.markdown(at_lib.GetBasicTextMarkdown(25,f'''{df_steam_numerics.shape}'''),unsafe_allow_html=True)
 st.subheader('Boxplot',divider=True)
 
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
@@ -74,7 +82,7 @@ for r in range(x_plots):
         sb.boxplot(data=df_steam_numerics[colName],  ax=axs[r, c], orient='v',color=sb.color_palette()[i % len(sb.color_palette())])
         i = i + 1
         
-plt.subplots_adjust(wspace=0.3, hspace=0.3)
+plt.subplots_adjust(wspace=0.3, hspace=0.2)
 st.pyplot(fig)
 st.subheader('Dispersão',divider=True)
 
@@ -102,7 +110,7 @@ df_steam_numerics = df_steam_numerics[nOrder]
 
 df_steam_corr = df_steam_numerics.corr()
 sb.heatmap(df_steam_corr, annot=True, fmt='.2f',cmap=sb.color_palette("coolwarm", as_cmap=True), ax=ax, mask=np.triu(df_steam_corr, k=1))
-ax.axhline(6, color='white', linewidth=2)
-ax.axhline(7, color='white', linewidth=4)
+ax.axhline(6, color='yellow', linewidth=2)
+ax.axhline(7, color='yellow', linewidth=4)
 
 st.pyplot(fig)
