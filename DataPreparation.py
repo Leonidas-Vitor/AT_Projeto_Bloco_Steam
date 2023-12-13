@@ -18,10 +18,10 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''),unsafe_allow_html=True)
 
 
-df_steam = pd.read_csv('SteamDatasetForStreamlit.csv',engine='pyarrow')
+df_steam = pd.read_csv('SteamDatasetForStreamlitInspected.csv',engine='pyarrow')
 
-df_steam.drop(df_steam[df_steam['scrap_status'] != 'Scrap_Sucess'].index,inplace=True)
-df_steam.drop(df_steam[df_steam['type'] != 'game'].index,inplace=True)
+#df_steam.drop(df_steam[df_steam['scrap_status'] != 'Scrap_Sucess'].index,inplace=True)
+#df_steam.drop(df_steam[df_steam['type'] != 'game'].index,inplace=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
@@ -499,6 +499,8 @@ with st.expander('Dados faltantes e problemas identificados'):
     |supported_languages|Um jogo não possuia nenhuma linguagem suportada|Desconhecido|Substituir por zero|
     ''')
 
+    st.divider()
+
     # Problemas na base e dimensões de qualidade afetadas (copiar tabela do TP7)
     st.markdown('''
     | Problema                                                                                                                                                                                                                                                                                                                                                                                  | Dimensões de qualidade afetados |
@@ -510,4 +512,5 @@ with st.expander('Dados faltantes e problemas identificados'):
     | Inconsistência nas reviews de um jogo, os dados do steamSPY apontam um valor e a api da Steam outro, foi escolhido seguir com os dados do SteamSpy pois refletem os dados na front page da loja                                                                                                                                                                                           | Consistência                    |
     | Alguns jogos, cerca de 20 possuem tempo de comercialização negativo pois os dados foram coletados ao longo de 10 dias, usar a data de quando a coleta foi finalizada resolveria o problema                                                                                                                                                                                                | Atualidade                      |
     | O nome da publicadora ter um espaço de diferença em relação ao mesmo nome na coluna desenvolvedor                                                                                                                                                                                                                   | Consistência                    |
+    | Vários apps marcados como "game" na coluna type, na versão são softwares diversos, inicialmente a crença de que apps sem valor na coluna "categories" seriam todos softwares se mostrou equivocada. A solução será montar uma lista de tags "proibidas" e remover todos os apps que possuam tais tags| Confiabilidade |
     ''')

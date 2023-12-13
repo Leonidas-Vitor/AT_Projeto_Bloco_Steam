@@ -145,7 +145,9 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
 
 fig, ax = plt.subplots(figsize=(10,5))
 sb.histplot(df_steam,x=df_steam['required_age'], hue=df_steam['required_age'],ax=ax, alpha=1.0,shrink=0.85)
-ax.legend(loc='upper right', bbox_to_anchor=(1.35, 0.9), ncol=1)
+legend = ax.get_legend()
+legend.set_bbox_to_anchor((1.15, 0.5))
+legend.set_loc('center right')
 st.pyplot(fig)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -365,9 +367,9 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
     '''),unsafe_allow_html=True)
 
-st.download_button(
-    label="Baixar o dataset preparado",
-    data=df_steam.to_csv(index=False),
-    file_name='SteamDatasetForStreamlitInspected.csv',
-    mime='text/csv',
-)
+#st.download_button(
+#    label="Baixar o dataset preparado",
+#    data=df_steam.to_csv(index=False),
+#    file_name='SteamDatasetForStreamlitInspected.csv',
+#    mime='text/csv',
+#)
