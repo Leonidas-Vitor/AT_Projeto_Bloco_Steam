@@ -36,7 +36,7 @@ y_plots = 3
 
 st.subheader('Filtros categóricos',divider=True)
 
-option = st.selectbox(
+tag = st.selectbox(
     'Escolha um gênero de jogo',(
     'Roguelike Deckbuilder','4X',
     'Simulation','Management', #=> Esses dois são juntos
@@ -44,8 +44,13 @@ option = st.selectbox(
     'Visual Novel','Twin Stick Shooter','Horror','Sexual Content','Card Battler','Beat \'em up','FPS','Shoot \'Em Up'
     'Tower Defense','Match 3','Puzzle-Platformer','Puzzle','2D Platformer','3D Platformer','Battle Royale','Others'),index=7)
 
-    
-df_steam = df_steam[df_steam['main_genre'] == option]
+
+def ContainTag(tags):
+    if tag in tags:
+        return True
+    return False
+
+df_steam = df_steam[df_steam['tags'].apply(ContainTag)]
 
 cols = st.columns(3)
 with cols[0]:
@@ -103,7 +108,7 @@ for r in range(x_plots):
         sb.boxplot(data=df_steam_numerics[colName],  ax=axs[r, c], orient='v',color=sb.color_palette()[i % len(sb.color_palette())])
         i = i + 1
         
-plt.subplots_adjust(wspace=0.3, hspace=0.1)
+plt.subplots_adjust(wspace=0.4, hspace=0.2)
 st.pyplot(fig)
 st.subheader('Dispersão',divider=True)
 
@@ -118,7 +123,7 @@ for r in range(x_plots):
         color= sb.color_palette()[i % len(sb.color_palette())],line_kws={'color':'red'})
         i += 1
         
-plt.subplots_adjust(wspace=0.3, hspace=0.3)
+plt.subplots_adjust(wspace=0.4, hspace=0.3)
 st.pyplot(fig)
 st.subheader('Mapa de calor',divider=True)
 fig, ax = plt.subplots(figsize=(15, 5))
