@@ -31,19 +31,16 @@ st.divider()
 df_steam_numerics = df_steam.drop(columns=['name','id','release_date','tags','main_genre','hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent'])
 
 
-x_plots = 3
-y_plots = 2
+x_plots = 2
+y_plots = 3
 
 st.subheader('Boxplot',divider=True)
-
-palette = sb.color_palette()
-st.text(palette)
 
 
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
 
 for i,col in enumerate(df_steam_numerics.columns):
-    sb.boxplot(data=df_steam_numerics[col], ax=axs[i//x_plots,i%y_plots],color=sb.color_palette()[i % len(sb.color_palette())])
+    sb.boxplot(data=df_steam_numerics[col], ax=axs[i//x_plots,i%y_plots],color=sb.color_palette()[i % len(sb.color_palette())],orient='h')
 
 plt.subplots_adjust(wspace=0.3, hspace=0.3)
 st.pyplot(fig)
