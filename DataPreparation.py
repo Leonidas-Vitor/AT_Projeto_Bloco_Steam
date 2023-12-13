@@ -476,10 +476,6 @@ st.divider()
 df_steam.drop(columns=['is_free','genres','supported_languages','categories','positive','negative',
     'developers','publishers','achievements','hltb_similarity','steamspy_owners',''],inplace=True)
 
-st.markdown(at_lib.GetBasicTextMarkdown(20,
-    f'''
-    O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
-    '''),unsafe_allow_html=True)
 
 df_steam['id'] = df_steam['id'].astype(int)
 df_steam['total_reviews'] = df_steam['total_reviews'].astype(int)
@@ -487,9 +483,15 @@ df_steam['total_supported_languages'] = df_steam['total_supported_languages'].as
 df_steam['total_achievements'] = df_steam['total_achievements'].astype(int)
 df_steam['release_date'] = df_steam['release_date'].astype('datetime64[ns]')
 
+st.markdown(at_lib.GetBasicTextMarkdown(20,
+    f'''
+    O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
+    '''),unsafe_allow_html=True)
+
 st.dataframe(df_steam,hide_index=True,height=250)
 
-st.table(df_steam.set_index('id').describe())
+#st.table(df_steam.set_index('id').describe())
+st.table(df_steam.info())
 
 st.download_button(
     label="Baixar o dataset preparado",
