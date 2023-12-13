@@ -79,7 +79,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     que permitem visualizar os dados filtrados. 
     '''),unsafe_allow_html=True)
 
-min_max_total_reviews = st.slider("Número total de reviews:", min_value =df_steam['total_reviews'].min(), max_value =df_steam['total_reviews'].max(),value=50000)
+min_max_total_reviews = st.slider("Número total de reviews:", min_value =df_steam['total_reviews'].min(), max_value =df_steam['total_reviews'].max(),value=(10,50000))
 df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_reviews'] >= min_max_total_reviews[0]) & (df_steam_numerics['total_reviews'] <= min_max_total_reviews[1])]
 
 cols = st.columns(3)
