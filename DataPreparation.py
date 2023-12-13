@@ -236,10 +236,10 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     realizadas na loja steam. 
     '''),unsafe_allow_html=True)
     #st.table(generosValidos)
-    
+
 html_p = """<p style='text-align: center; font-size:%spx;'><b>%s</b></p>"""
 link = 'https://howtomarketagame.com/2022/04/18/what-genres-are-popular-on-steam-in-2022/'
-st.markdown(html_p % tuple([15,f'GitHub: <a href={link}>Link para o repositório</a>']),unsafe_allow_html = True)
+st.markdown(html_p % tuple([15,f'Referência: <a href={link}>Link para o artigo</a>']),unsafe_allow_html = True)
 
 def GetMainGenre(tags):
     if (type(tags) == str):
@@ -473,7 +473,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 st.dataframe(df_steam,hide_index=True,height=250)
 
 #st.table(df_steam.set_index('id').describe())
-st.text(df_steam.info())
+st.text(df_steam.info)
 
 st.download_button(
     label="Baixar o dataset preparado",

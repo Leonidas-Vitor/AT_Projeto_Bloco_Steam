@@ -112,20 +112,20 @@ df_duration_median = df_duration_median.groupby('main_genre').median().reset_ind
 st.dataframe(df_duration_median,use_container_width=True)
 
 
-def FillDuration(df):
-    mask = (df['total_duration'] == 0) | df['total_duration'].isna() | df['total_duration'].apply(type) == str
-    genres = df.loc[mask, 'main_genre']
-    df.loc[mask, 'total_duration'] = df_duration_median.set_index('main_genre').loc[genres, 'total_duration'].values
-    return df
+#def FillDuration(df):
+#    mask = (df['total_duration'] == 0) | df['total_duration'].isna() | df['total_duration'].apply(type) == str
+#    genres = df.loc[mask, 'main_genre']
+#    df.loc[mask, 'total_duration'] = df_duration_median.set_index('main_genre').loc[genres, 'total_duration'].values
+#    return df
 
-df_steam = FillDuration(df_steam)
+#df_steam = FillDuration(df_steam)
 
-#def FillDuration(row):
-#   if (row['total_duration'] == 0 or np.isnan(row['total_duration']) or type(row['total_duration']) == str):
-#        row['total_duration'] = df_duration_median[df_duration_median['main_genre'] == row['main_genre']]['total_duration'].values[0]
-#    return row
+def FillDuration(row):
+   if (row['total_duration'] == 0 or np.isnan(row['total_duration']) or type(row['total_duration']) == str):
+        row['total_duration'] = df_duration_median[df_duration_median['main_genre'] == row['main_genre']].copy()['total_duration'].values[0]
+    return row
 
-#df_steam = df_steam.apply(FillDuration,axis=1)
+df_steam = df_steam.apply(FillDuration,axis=1)
 
 df_steam.drop(columns=['ContainForbiddenTag','isEarlyAcess','hltb_similarity'],inplace=True)
 
