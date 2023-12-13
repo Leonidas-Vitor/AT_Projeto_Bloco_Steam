@@ -37,6 +37,29 @@ df_steam_numerics = df_steam.drop(columns=['name','release_date','tags','main_ge
 x_plots = 2
 y_plots = 3
 
+st.subheader('Filtros categóricos',divider=True)
+
+option = st.selectbox(
+    'Escolha o gênero do jogo para gerar a regressão linear',(
+    'Roguelike Deckbuilder','4X',
+    'Simulation','Management', #=> Esses dois são juntos
+    'Open World Survival Craft','City Builder','RPG','Rogue-like','Metroidvania','Dungeon Crawler','Souls-like',
+    'Visual Novel','Twin Stick Shooter','Horror','Sexual Content','Card Battler','Beat \'em up','FPS','Shoot \'Em Up'
+    'Tower Defense','Match 3','Puzzle-Platformer','Puzzle','2D Platformer','3D Platformer','Battle Royale','Others'),index=7)
+
+    
+df_steam = df_steam[df_steam['main_genre'] == option]
+
+cols = st.columns(3)
+with cols[0]:
+    sp = st.checkbox('Incluir jogos com single-player', value=True)
+    df_steam = df_steam[df_steam['hasSingleplayer'] == sp]
+with cols[1]:
+    mp = st.checkbox('Incluir jogos com multi-player', value=True)
+    df_steam = df_steam[df_steam['hasMultiplayer'] == mp]
+with cols[2]:
+    cp =st.checkbox('Incluir jogos com co-op', value=True)
+    df_steam = df_steam[df_steam['hasCoop'] == cp]
 st.subheader('Filtros',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(25,
@@ -44,9 +67,6 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     Aqui estão alguns controladores para filtrar os dados, removendo outliers de cada coluna. Mais abaixo estão os gráficos\
     que permitem visualizar os dados filtrados. 
     '''),unsafe_allow_html=True)
-#É importante que essa filtragem seja feita já pensando no tipo de jogo que se\
- #   quer prever, por exemplo, RPGs tendem a ter uma duração maior que jogos de plataforma, portanto eliminar os outliers superiores\
-   # pode não ser uma ideia adequada cas
 
 min_max_total_reviews = st.slider("Número total de reviews:", value=(df_steam_numerics['total_reviews'].min(), df_steam_numerics['total_reviews'].max()))
 df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_reviews'] >= min_max_total_reviews[0]) & (df_steam_numerics['total_reviews'] <= min_max_total_reviews[1])]
@@ -83,7 +103,7 @@ for r in range(x_plots):
         sb.boxplot(data=df_steam_numerics[colName],  ax=axs[r, c], orient='v',color=sb.color_palette()[i % len(sb.color_palette())])
         i = i + 1
         
-plt.subplots_adjust(wspace=0.3, hspace=0.0)
+plt.subplots_adjust(wspace=0.3, hspace=0.1)
 st.pyplot(fig)
 st.subheader('Dispersão',divider=True)
 
