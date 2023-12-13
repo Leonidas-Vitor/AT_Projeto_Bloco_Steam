@@ -63,9 +63,9 @@ with cols[0]:
         a operação para já retirar esse tipo de app do dataset.
         '''),unsafe_allow_html=True)
 
-forbiddenTagCount = df_steam[df_steam['ContainForbiddenTag']==True]['id'].count()
-forbiddenTagPercent = (forbiddenTagCount/df_steam['id'].count())*100
 with cols[1]:
+    forbiddenTagCount = df_steam[df_steam['ContainForbiddenTag']==True]['id'].count()
+    forbiddenTagPercent = (forbiddenTagCount/df_steam['id'].count())*100
     st.metric(label="Jogos removidos", value=f'{forbiddenTagCount}', delta=f'-{forbiddenTagPercent:.2f}%')
 
 with st.expander('Apps com tags indevidas'):
