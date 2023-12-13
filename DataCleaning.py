@@ -28,19 +28,23 @@ st.dataframe(df_steam,hide_index=True,height=250)
 st.divider()
 st.subheader('Remoção de jogos em acesso antecipado',divider=True)
 
-st.markdown(at_lib.GetBasicTextMarkdown(20,
-    '''
-    Jogos em acesso antecipado possuem um comportamento próprio, pois ainda estão em desenvolvimento e atraem um tipo de público\
-    diferente dos jogos já lançados. Por isso, iremos remover esses jogos do dataset, pois não queremos que eles influenciem\
-    o modelo de regressão linear será focado para jogos totalmente lançados.
-    '''),unsafe_allow_html=True)
+cols = st.columns([0.9,0.1])
+with cols[0]:
+    st.markdown(at_lib.GetBasicTextMarkdown(20,
+        '''
+        Jogos em acesso antecipado possuem um comportamento próprio, pois ainda estão em desenvolvimento e atraem um tipo de público\
+        diferente dos jogos já lançados. Por isso, iremos remover esses jogos do dataset, pois não queremos que eles influenciem\
+        o modelo de regressão linear será focado para jogos totalmente lançados.
+        '''),unsafe_allow_html=True)
+with cols[1]:
+    earlyAcessCount = df_steam[df_steam['isEarlyAcess']==True]['id'].count()
+    earlyAcessPercent = (earlyAcessCount/df_steam['id'].count())*100
+    st.metric(label="Jogos removidos", value=f'{earlyAcessCount}', delta=f'-{earlyAcessPercent:.2f}%')
 
 with st.expander('Jogos em acesso antecipado'):
     st.dataframe(df_steam[df_steam['isEarlyAcess']==True][['name','id','isEarlyAcess']],hide_index=True,height=250,use_container_width=True)
 
-earlyAcessCount = df_steam[df_steam['isEarlyAcess']==True]['id'].count()
-earlyAcessPercent = (earlyAcessCount/df_steam['id'].count())*100
-st.metric(label="Jogos removidos", value=f'{earlyAcessCount}', delta=f'-{earlyAcessPercent:.2f}%')
+df_steam = df_steam[df_steam['isEarlyAcess']==False]
 st.subheader('Remoção de não jogos',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -53,7 +57,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 forbiddenTags = ['Animation & Modeling','Game Development','Video Production', 'Utilities','Photo Editing','Software','VR']
 df_steam['ContainForbiddenTag'] = df_steam['tags'].apply(lambda x: any(tag in x for tag in forbiddenTags))
 
-cols = st.columns([0.7,0.3])
+cols = st.columns([0.9,0.1])
 with cols[0]:
     st.markdown(at_lib.GetBasicTextMarkdown(15,
         f'''
