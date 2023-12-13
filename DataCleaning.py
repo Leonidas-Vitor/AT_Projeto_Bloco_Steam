@@ -92,11 +92,6 @@ with st.expander('Apps com tags indevidas'):
     st.dataframe(df_steam[df_steam['ContainForbiddenTag']==True][['name','id','tags']],hide_index=True,height=250,use_container_width=True)
 
 df_steam = df_steam[df_steam['ContainForbiddenTag']==False]
-st.subheader('Remoção de playtests',divider=True)
-
-df_steam['isPlaytest'] = df_steam['name'].apply(lambda n: 'Playtest' in n if n != None else False)
-
-st.dataframe(df_steam[df_steam['isPlaytest'] == True],hide_index=True,height=250,use_container_width=True)
 st.subheader('Preenchendo as durações ausentes',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
