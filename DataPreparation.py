@@ -473,7 +473,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 st.dataframe(df_steam,hide_index=True,height=250)
 
 #st.table(df_steam.set_index('id').describe())
-st.dataframe(df_steam.info())
+st.table(df_steam.info())
 
 st.download_button(
     label="Baixar o dataset preparado",
