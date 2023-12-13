@@ -35,6 +35,9 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     lista de tags normalmente associdas a esses tipos de apps.
     '''),unsafe_allow_html=True)
 
+forbiddenTags = ['Animation & Modeling','Game Development','Design & Illustration','Video Production',
+'Utilities','Photo Editing','Software','VR']
+
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
     **Lista de tags indevidas:**\n
@@ -43,8 +46,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     a operação para já retirar esse tipo de app do dataset.
     '''),unsafe_allow_html=True)
 
-forbiddenTags = ['Animation & Modeling','Game Development','Design & Illustration','Video Production',
-'Utilities','Photo Editing','Software','VR']
+
 
 df_steam['ContainForbiddenTag'] = df_steam['tags'].apply(lambda x: any(tag in x for tag in forbiddenTags))
 with st.expander('Apps com tags indevidas'):
