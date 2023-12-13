@@ -38,10 +38,12 @@ st.subheader('Boxplot',divider=True)
 
 palette = st.session_state['sb_theme']['palette']
 st.text(palette)
+
+
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
 
 for i,col in enumerate(df_steam_numerics.columns):
-    sb.boxplot(data=df_steam_numerics[col], ax=axs[i//x_plots,i%y_plots],color=palette[i % len(palette)])
+    sb.boxplot(data=df_steam_numerics[col], ax=axs[i//x_plots,i%y_plots])
 
 plt.subplots_adjust(wspace=1, hspace=1)
 st.pyplot(fig)
