@@ -23,11 +23,12 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
     '''),unsafe_allow_html=True)
 
-st.dataframe(df_steam,hide_index=True,height=250)
+df_steam.set_index('id',inplace=True)
+st.dataframe(df_steam,height=250)
 
 st.divider()
 
-st.dataframe(df_steam.describe(),height=250,hide_index=True)
+#st.dataframe(df_steam.describe(),height=250,hide_index=True)
 
 #nCols = ['total_duration','total_achievements','total_supported_languages','positive_reviews_percent','price', 'self_published_percent','commercialization_days']
 df_steam_numerics = df_steam.drop(columns=['name','id','release_date','tags','main_genre','hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent'])
@@ -67,7 +68,7 @@ with cols[2]:
     min_max_total_achievements = st.slider("Número de conquistas:", value=(df_steam_numerics['total_achievements'].min(), df_steam_numerics['total_achievements'].max()))
     df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_achievements'] >= min_max_total_achievements[0]) & (df_steam_numerics['total_achievements'] <= min_max_total_achievements[1])]
 
-st.markdown(at_lib.GetBasicTextMarkdown(25,f'''{df_steam_numerics.shape}'''),unsafe_allow_html=True)
+st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Quantidade de jogos restantes no dataset: {df_steam_numerics.shape[0]}'''),unsafe_allow_html=True)
 st.subheader('Boxplot',divider=True)
 
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
@@ -109,8 +110,26 @@ nOrder.append('total_reviews')
 df_steam_numerics = df_steam_numerics[nOrder]
 
 df_steam_corr = df_steam_numerics.corr()
-sb.heatmap(df_steam_corr, annot=True, fmt='.2f',cmap=sb.color_palette("coolwarm", as_cmap=True), ax=ax, mask=np.triu(df_steam_corr, k=1))
+sb.heatmap(df_steam_corr, annot=True, fmt='.2f',cmap=sb.color_palette("coolwarm", as_cmap=True), ax=ax, mask=np.triu(df_steam_corr, k=1),vmin=-1, vmax=1)
 ax.axhline(6, color='yellow', linewidth=2)
 ax.axhline(7, color='yellow', linewidth=4)
 
 st.pyplot(fig)
+
+df_steam.drop(columns=['hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent','main_genre','tags','name'],inplace=True)
+
+st.markdown(at_lib.GetBasicTextMarkdown(20,
+    f'''
+    O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
+    '''),unsafe_allow_html=True)
+
+st.dataframe(df_steam,hide_index=True,height=250)
+
+st.table(df_steam.set_index('id').describe())
+
+st.download_button(
+    label="Baixar o dataset preparado",
+    data=df_steam.to_csv(index=False),
+    file_name='SteamDatasetForStreamlitCleaned.csv',
+    mime='text/csv',
+)
