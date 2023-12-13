@@ -34,9 +34,10 @@ df_steam_numerics = df_steam.drop(columns=['name','id','release_date','tags','ma
 x_plots = 3
 y_plots = 3
 
-palette = st.session_state['sb_theme']['palette']
 st.subheader('Boxplot',divider=True)
 
+palette = st.session_state['sb_theme']['palette']
+st.text(palette)
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
 
 for i,col in enumerate(df_steam_numerics.columns):
