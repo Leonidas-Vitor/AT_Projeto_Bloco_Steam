@@ -33,12 +33,14 @@ df_steam_numerics = df_steam.drop(columns=['name','id','release_date','tags','ma
 
 x_plots = 3
 y_plots = 3
+
+palette = sb.color_palette()
 st.subheader('Boxplot',divider=True)
 
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 15))
 
 for i,col in enumerate(df_steam_numerics.columns):
-    sb.boxplot(data=df_steam_numerics[col], ax=axs[i//x_plots,i%y_plots],color=sb.color_palette()[i % len(palette)])
+    sb.boxplot(data=df_steam_numerics[col], ax=axs[i//x_plots,i%y_plots],color=palette[i % len(palette)])
 
 plt.subplots_adjust(wspace=1, hspace=1)
 st.pyplot(fig)
