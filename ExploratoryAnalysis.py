@@ -13,7 +13,8 @@ st.header('Análise exploratória',divider=True)
 st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''
     Finalmente com o dataset limpo e pronto para ser utilizado, podemos começar a análise exploratória e identificar\
-    as variáveis independentes que mais influenciam na variável dependente, que é o número total de reviews.
+    as variáveis independentes que mais influenciam na variável dependente, que é o número total de reviews. Além de\
+    remover outliers extremos.
     '''),unsafe_allow_html=True)
 
 df_steam = pd.read_csv('SteamDatasetForStreamlitCleaned.csv',engine='pyarrow')
@@ -34,7 +35,20 @@ st.divider()
 x_plots = 2
 y_plots = 3
 
-st.subheader('Botões para reiniciar ',divider=True)
+st.subheader('Justificativa dos filtros',divider=True)
+
+st.markdown(at_lib.GetBasicTextMarkdown(20,
+    '''
+    Foram disponibilizados filtros para além de facilitar a exploração dos dados, também permitir montar uma base\
+    mais próxima do jogo que será previsto, por exemplo, usar dados de RPGs para prever o desempenho de um jogo de\
+    plataforma não parece ser uma boa ideia, pois são públicos e mercados muito distintos. De tal forma que um jogo\
+    de plataforma por 30 dólares seja muito caro e um jogo de RPG por 30 dólares seja muito barato, e dependendo da\
+    quantidade amostras de cada gênero, isso pode enviesar o modelo e levar a conclusões muito distorcidas da realidade\
+    para o jogo que se deseja prever.
+    '''),unsafe_allow_html=True)
+
+
+st.subheader('Botões',divider=True)
 
 cols = st.columns(2)
 with cols[0]:
@@ -59,7 +73,7 @@ def ContainTag(tags):
 
 df_steam = df_steam[df_steam['tags'].apply(ContainTag)]
 
-genre = st.radio('',['Apenas jogos com single-player'],0,horizontal = True)
+#genre = st.radio('',['Apenas jogos com single-player'],0,horizontal = True)
 cols = st.columns(3)
 with cols[0]:
     sp = st.checkbox('Incluir jogos com single-player', value=True)
