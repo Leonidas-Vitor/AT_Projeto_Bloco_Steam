@@ -142,7 +142,7 @@ publisherCut = euaTaxCut * (1-(pT/100))
 brTaxCut = publisherCut * 0.845
 
 data = {##Falta IOF, e SPread
-    'Etapa': ['Steam - 30%', 'EUA Imposto - 30%', f'Publicadora - {pt}%', 'Imposto sob faturamento - 15,5%'],
+    'Etapa': ['Steam - 30%', 'EUA Imposto - 30%', f'Publicadora - {pT}%', 'Imposto sob faturamento - 15,5%'],
     'Quantidade': [steamCut, euaTaxCut, publisherCut, brTaxCut]
 }
 
