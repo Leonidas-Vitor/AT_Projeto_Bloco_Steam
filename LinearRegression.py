@@ -32,7 +32,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
     '''),unsafe_allow_html=True)
     
-st.dataframe(df_steam,hide_index=True,height=250)
+st.dataframe(df_steam,height=250,use_container_width=True)
 
 
 #---------------- Faltou lugar para upar um novo csv
@@ -40,54 +40,67 @@ st.dataframe(df_steam,hide_index=True,height=250)
 with st.expander('Dataset preparado'):
     st.markdown(at_lib.GetBasicTextMarkdown(20,
         f'''
-        O dataset atualmente possui {df_filtred.shape[0]} linhas e {df_filtred.shape[1]} colunas.
+        O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
         '''),unsafe_allow_html=True)
         
-    st.dataframe(df_filtred,hide_index=True,height=250)
+    st.dataframe(df_steam,hide_index=True,height=250)
 
-st.table(df_filtred.describe())
+st.table(df_steam.describe())
 
-x = df_filtred.drop(columns=['total_reviews','tags','id','name','release_date','main_genre','isEarlyAcess',
+x = df_steam.drop(columns=['total_reviews','tags','id','name','release_date','main_genre','isEarlyAcess',
 'hasSingleplayer','hasMultiplayer','hasCoop',''])
-y = df_filtred['total_reviews']
-
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
-
-MinMax_scaler = MinMaxScaler()
-
-# Aplicando o Scaler
-x_train_scaled = MinMax_scaler.fit_transform(x_train)
-x_test_scaled =  MinMax_scaler.fit_transform(x_test)
+y = df_steam['total_reviews']
 
 
-with st.expander('Grupos de treino e teste escalonados'):
-    columns = st.columns([0.5,0.5])
-    with columns[0]:
-        st.text('Grupo de treino escalonado')
-        st.table(x_train_scaled)
-    with columns[1]:
-        st.text('Grupo de teste escalonado')
-        st.table(x_test_scaled)
+num_repeats = 500
+mse_scores = []
+mae_scores = []
+
+
+for _ in range(num_repeats):
+
+
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
+
+    MinMax_scaler = MinMaxScaler()
+
+    # Aplicando o Scaler
+    x_train_scaled = MinMax_scaler.fit_transform(x_train)
+    x_test_scaled =  MinMax_scaler.fit_transform(x_test)
+
+    modelo_regressao = LinearRegression()
+    modelo_regressao.fit(x_train_scaled, y_train)
+
+    y_pred = modelo_regressao.predict(x_test_scaled)
+
+    mse = mean_squared_error(y_test, y_pred)
+    mse.append(mse)
+    #rmse = np.sqrt(mse)
+    mae = mean_absolute_error(y_test, y_pred)
+    mae.append(mae)
+
+#with st.expander('Grupos de treino e teste escalonados'):
+#    columns = st.columns([0.5,0.5])
+#    with columns[0]:
+#        st.text('Grupo de treino escalonado')
+#        st.table(x_train_scaled)
+#    with columns[1]:
+#        st.text('Grupo de teste escalonado')
+#        st.table(x_test_scaled)
 #st.dataframe(x_train_scaled,hide_index=True,height=250)
 
-modelo_regressao = LinearRegression()
-modelo_regressao.fit(x_train_scaled, y_train)
 
-y_pred = modelo_regressao.predict(x_test_scaled)
-
-mse = mean_squared_error(y_test, y_pred)
-rmse = np.sqrt(mse)
-mae = mean_absolute_error(y_test, y_pred)
 #st.text(f"Mean Squared Error: {mse}")
 
 cols = st.columns([0.15,0.3,0.3,0.3])
 #Possui dados de categoria?
 with cols[1]:
-    st.metric(label="MSE", value=f'{mse:.2f}')
+    st.metric(label=f"MSE médio de {num_repeats} repetições", value=f'{np.mean(mse_scores):.2f}')
 with cols[2]:
-    st.metric(label="RMSE", value=f'{rmse:.2f}')
+    st.metric(label="RMSE de {num_repeats} repetições", value=f'{np.sqrt(np.mean(mse_scores)):.2f}')
 with cols[3]:
-    st.metric(label="MAE", value=f'{mae:.2f}')
+    st.metric(label="MAE de {num_repeats} repetições", value=f'{np.mean(mae_scores):.2f}')
+st.subheader('Gráficos',divider=True)
 
 with st.expander('Gráficos de Dispersão'):
     for col in x_test.columns:
