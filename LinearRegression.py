@@ -71,17 +71,20 @@ game_example = pd.DataFrame({'total_duration': [15], 'price': [14.99],
 
 MinMax_scaler = MinMaxScaler()
 
-game_example_scaled = MinMax_scaler.fit_transform(game_example)
+
 
 for _ in range(num_repeats):
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
 
     # Aplicando o Scaler
     x_train_scaled = MinMax_scaler.fit_transform(x_train)
+    game_example_scaled = MinMax_scaler.transform(game_example)
+
     x_test_scaled =  MinMax_scaler.fit_transform(x_test)
 
     modelo_regressao = LinearRegression()
     modelo_regressao.fit(x_train_scaled, y_train)
+
 
     y_pred = modelo_regressao.predict(x_test_scaled)
     
