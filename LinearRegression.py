@@ -47,9 +47,17 @@ with st.expander('Dataset preparado'):
 
 st.table(df_steam.describe())
 
-x = df_steam.drop(columns=['total_reviews','tags','id','name','release_date','main_genre','isEarlyAcess',
-'hasSingleplayer','hasMultiplayer','hasCoop',''])
+x = df_steam[['total_duration','price','total_supported_languages', 'total_achievements']]
 y = df_steam['total_reviews']
+
+
+st.subheader('Modelo de regressão',divider=True)
+st.markdown(at_lib.GetBasicTextMarkdown(20,
+'''
+Os dados estão sendo separados em 70% para treino e 30% para teste, sendo escalonados com o MinMaxScaler.\
+O modelo utilizado é o LinearRegression do sklearn e a métrica utilizada é o MSE, RMSE e o MAE médios\
+de 500 repetições. O processo pode demorar um pouco, por favor aguarde.
+'''),unsafe_allow_html=True)
 
 
 num_repeats = 500
