@@ -66,7 +66,8 @@ mae_scores = []
 
 reviews = []
 
-game_example = pd.DataFrame({'total_duration': [15], 'price': [14.99], 'total_supported_languages': [3], 'total_achievements': [150]})
+game_example = pd.DataFrame({'total_duration': [15], 'price': [14.99], 
+'total_supported_languages': [3], 'total_achievements': [100]})
 
 MinMax_scaler = MinMaxScaler()
 
@@ -74,8 +75,6 @@ game_example_scaled = MinMax_scaler.fit_transform(game_example)
 
 for _ in range(num_repeats):
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
-
-
 
     # Aplicando o Scaler
     x_train_scaled = MinMax_scaler.fit_transform(x_train)
@@ -85,7 +84,9 @@ for _ in range(num_repeats):
     modelo_regressao.fit(x_train_scaled, y_train)
 
     y_pred = modelo_regressao.predict(x_test_scaled)
-
+    
+    st.write(y_pred)
+    
     mse = mean_squared_error(y_test, y_pred)
     mse_scores.append(mse)
     #rmse = np.sqrt(mse)
@@ -104,7 +105,7 @@ for _ in range(num_repeats):
 #        st.table(x_test_scaled)
 #st.dataframe(x_train_scaled,hide_index=True,height=250)
 
-st.table(reviews)
+#st.table(reviews)
 
 #st.text(f"Mean Squared Error: {mse}")
 
