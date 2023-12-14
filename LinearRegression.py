@@ -65,7 +65,7 @@ mae_scores = []
 
 reviews = []
 
-game_example = pd.DataFrame({'total_duration': 15, 'price': 14.99, 'total_supported_languages': 3, 'total_achievements': 200})
+game_example = pd.DataFrame({'total_duration': [15], 'price': [14.99], 'total_supported_languages': [3], 'total_achievements': [150]})
 
 game_example_scaled = MinMax_scaler.fit_transform(game_example)
 
