@@ -21,7 +21,7 @@ df_steam = pd.read_csv('SteamDatasetForStreamlitCleaned.csv',engine='pyarrow')
 
 df_steam['total_reviews'] = np.log(df_steam['total_reviews'] + 1)
 
-st.dataframe(df_steam['total_reviews'].unique(),height=250, width=250)
+#st.dataframe(df_steam['total_reviews'].unique(),height=250, width=250)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
@@ -102,7 +102,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     que permitem visualizar os dados filtrados. 
     '''),unsafe_allow_html=True)
 
-min_max_total_reviews = st.slider("Número total de reviews:", min_value =df_steam['total_reviews'].min(), max_value =df_steam['total_reviews'].max(),value=(10.0,10000.0))
+min_max_total_reviews = st.slider("Número total de reviews:", min_value =df_steam['total_reviews'].min(), max_value =df_steam['total_reviews'].max(),value=(0.0,10000.0))
 df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_reviews'] >= min_max_total_reviews[0]) & (df_steam_numerics['total_reviews'] <= min_max_total_reviews[1])]
 
 cols = st.columns(3)
@@ -190,7 +190,7 @@ st.subheader('Conclusões',divider=True)
 st.markdown(at_lib.GetBasicTextMarkdown(20,
 '''
 Apartir dos diversos gráficos gerados, podemos concluir que as variáveis que mais influenciam no número\
-total de reviews para jogos do gênero rogue-lite/rogue-like são: \'total_duration\', \'price'\,\
+total de reviews para jogos do gênero rogue-lite/rogue-like são: \'total_duration\', \'price\',\
 \'total_supported_languages\' e \'total_achievements\'. Portanto elas que serão utilizadas para treinar\
 o modelo de regressão linear na próxima página.
 '''),unsafe_allow_html=True)
