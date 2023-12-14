@@ -137,7 +137,7 @@ fig = go.Figure(go.Funnel(
     #textinfo = "value+percent initial",
     marker = {"color": ["deepskyblue", "lightsalmon", "tan", "teal"],
     "line": {"width": [4, 2, 2, 3, 1], "color": ["wheat", "wheat", "blue", "wheat"]}},
-    connector = {"line": {"color": "royalblue", "dash": "dot", "width": 3}},
+    connector = {"line": {"color": "royalblue", "dash": "dot", "width": 3},"fillcolor":'white'},
 ))
 
 st.plotly_chart(fig, use_container_width=True)
