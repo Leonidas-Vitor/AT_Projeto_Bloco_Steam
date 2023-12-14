@@ -82,10 +82,10 @@ for _ in range(num_repeats):
     y_pred = modelo_regressao.predict(x_test_scaled)
 
     mse = mean_squared_error(y_test, y_pred)
-    mse.append(mse)
+    mse_scores.append(mse)
     #rmse = np.sqrt(mse)
     mae = mean_absolute_error(y_test, y_pred)
-    mae.append(mae)
+    mae_scores.append(mae)
 
 #with st.expander('Grupos de treino e teste escalonados'):
 #    columns = st.columns([0.5,0.5])
