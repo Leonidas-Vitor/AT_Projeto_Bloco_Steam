@@ -121,8 +121,30 @@ with cols[2]:
 with cols[3]:
     st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.mean(mae_scores):.2f}')
 
-st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Previsão de reviews: {np.mean(reviews)}'''),unsafe_allow_html=True)
-st.subheader('Gráficos',divider=True)
+st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Previsão de reviews: {int(np.mean(reviews))}'''),unsafe_allow_html=True)
+st.subheader('Estimativa de faturamento',divider=True)
+
+data = {
+    'Etapa': ['Visitas', 'Cliques', 'Leads', 'Vendas'],
+    'Quantidade': [1000, 200, 50, 10]
+}
+
+# Cria um DataFrame a partir dos dados
+df = pd.DataFrame(data)
+
+# Ordena o DataFrame em ordem decrescente de quantidade
+df = df.sort_values(by='Quantidade', ascending=False)
+
+# Cria o gráfico de funil
+fig, ax = plt.subplots(figsize=(10,5))
+plt.figure(figsize=(10, 5))
+sns.barplot(x='Quantidade', y='Etapa', data=df, orient='h', palette='Blues',ax = ax)
+plt.gca().invert_yaxis()  # Inverte o eixo y para que o funil seja de cima para baixo
+plt.xlabel('Quantidade')
+plt.title('Gráfico de Funil')
+
+st.pyplot(fig)
+st.subheader('Gráficos de avaliação do modelo',divider=True)
 
 with st.expander('Gráficos de Dispersão'):
     for col in x_test.columns:
