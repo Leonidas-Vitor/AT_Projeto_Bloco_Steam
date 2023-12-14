@@ -60,15 +60,16 @@ O modelo utilizado é o LinearRegression do sklearn e a métrica utilizada é o 
 de {num_repeats} repetições. O processo pode demorar um pouco, por favor aguarde.
 '''),unsafe_allow_html=True)
 
-
-
 mse_scores = []
 mae_scores = []
 
+reviews = []
+
+game_example = pd.DataFrame({'total_duration': 15, 'price': 14.99, 'total_supported_languages': 3, 'total_achievements': 200})
+
+game_example_scaled = MinMax_scaler.fit_transform(game_example)
 
 for _ in range(num_repeats):
-
-
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
 
     MinMax_scaler = MinMaxScaler()
@@ -87,6 +88,8 @@ for _ in range(num_repeats):
     #rmse = np.sqrt(mse)
     mae = mean_absolute_error(y_test, y_pred)
     mae_scores.append(mae)
+
+    reviews.append(modelo_regressao.predict(game_example_scaled))
 
 #with st.expander('Grupos de treino e teste escalonados'):
 #    columns = st.columns([0.5,0.5])
@@ -109,6 +112,8 @@ with cols[2]:
     st.metric(label=f"RMSE de {num_repeats} repetições", value=f'{np.sqrt(np.mean(mse_scores)):.2f}')
 with cols[3]:
     st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.mean(mae_scores):.2f}')
+
+st.markdown(at_lib.GetBasicTextMarkdown(25,f'''{np.mean(reviews)}'''),unsafe_allow_html=True)
 st.subheader('Gráficos',divider=True)
 
 with st.expander('Gráficos de Dispersão'):
