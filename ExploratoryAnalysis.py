@@ -19,6 +19,8 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
 
 df_steam = pd.read_csv('SteamDatasetForStreamlitCleaned.csv',engine='pyarrow')
 
+df_steam['total_reviews_log'] = np.log(df_steam['total_reviews'])
+
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
     O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
@@ -181,6 +183,20 @@ ax.axhline(6, color='yellow', linewidth=2)
 ax.axhline(7, color='yellow', linewidth=4)
 
 st.pyplot(fig)
+st.subheader('Conclusões',divider=True)
+
+st.markdown(at_lib.GetBasicTextMarkdown(20,
+'''
+Apartir dos diversos gráficos gerados, podemos concluir que as variáveis que mais influenciam no número\
+total de reviews para jogos do gênero rogue-lite/rogue-like são: \'total_duration\', \'price'\,\
+\'total_supported_languages\' e \'total_achievements\'. Portanto elas que serão utilizadas para treinar\
+o modelo de regressão linear na próxima página.
+'''),unsafe_allow_html=True)
+
+st.markdown(at_lib.GetBasicTextMarkdown(20,
+'''
+Essa conclusão foi baseada na configuração padrão da aplicação, ela não é gerada automáticamente.
+'''),unsafe_allow_html=True)
 
 #df_steam.drop(columns=['hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent','main_genre','tags','name'],inplace=True)
 
