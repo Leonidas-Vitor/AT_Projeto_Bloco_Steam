@@ -116,11 +116,11 @@ for _ in range(num_repeats):
 cols = st.columns([0.15,0.3,0.3,0.3])
 #Possui dados de categoria?
 with cols[1]:
-    st.metric(label=f"MSE médio de {num_repeats} repetições", value=f'{np.mean(mse_scores):.2f}')
+    st.metric(label=f"MSE médio de {num_repeats} repetições", value=f'{np.exp(np.mean(mse_scores)):.2f}')
 with cols[2]:
-    st.metric(label=f"RMSE de {num_repeats} repetições", value=f'{np.sqrt(np.mean(mse_scores)):.2f}')
+    st.metric(label=f"RMSE de {num_repeats} repetições", value=f'{np.exp(np.sqrt(np.mean(mse_scores))):.2f}')
 with cols[3]:
-    st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.mean(mae_scores):.2f}')
+    st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.exp(np.mean(mae_scores)):.2f}')
 st.subheader('Estimativa de faturamento',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Previsão de reviews: {int(np.exp(np.mean(reviews)-1))}'''),unsafe_allow_html=True)
