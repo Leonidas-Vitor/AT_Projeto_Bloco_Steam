@@ -134,11 +134,13 @@ data = {
 fig = go.Figure(go.Funnel(
     y = data['Etapa'],
     x = data['Quantidade'],
-    textinfo = "value+percent initial",
-    marker = {"color": ["deepskyblue", "lightsalmon", "tan", "teal"]},
+    #textinfo = "value+percent initial",
+    marker = {"color": ["deepskyblue", "lightsalmon", "tan", "teal"],
+    "line": {"width": [4, 2, 2, 3, 1], "color": ["wheat", "wheat", "blue", "wheat"]}},
+    connector = {"line": {"color": "royalblue", "dash": "dot", "width": 3}},
 ))
 
-st.plotly_chart(fig)
+st.plotly_chart(fig, use_container_width=True)
 st.subheader('Gráficos de avaliação do modelo',divider=True)
 
 with st.expander('Gráficos de Dispersão'):
