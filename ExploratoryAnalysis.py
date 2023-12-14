@@ -21,6 +21,8 @@ df_steam = pd.read_csv('SteamDatasetForStreamlitCleaned.csv',engine='pyarrow')
 
 df_steam['total_reviews'] = np.log(df_steam['total_reviews'])
 
+st.dataframe(df_steam['total_reviews'].unique(),height=250, width=250)
+
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
     O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
@@ -100,7 +102,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     que permitem visualizar os dados filtrados. 
     '''),unsafe_allow_html=True)
 
-min_max_total_reviews = st.slider("Número total de reviews:", min_value =df_steam['total_reviews'].min(), max_value =df_steam['total_reviews'].max(),value=(10,10000))
+min_max_total_reviews = st.slider("Número total de reviews:", min_value =df_steam['total_reviews'].min(), max_value =df_steam['total_reviews'].max(),value=(10.0,10000.0))
 df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_reviews'] >= min_max_total_reviews[0]) & (df_steam_numerics['total_reviews'] <= min_max_total_reviews[1])]
 
 cols = st.columns(3)
