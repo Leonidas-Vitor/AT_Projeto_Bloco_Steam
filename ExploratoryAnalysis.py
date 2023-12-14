@@ -19,7 +19,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
 
 df_steam = pd.read_csv('SteamDatasetForStreamlitCleaned.csv',engine='pyarrow')
 
-df_steam['total_reviews'] = np.log10(df_steam['total_reviews'] + 1)
+df_steam['total_reviews'] = np.log(df_steam['total_reviews'] + 1)
 
 #st.dataframe(df_steam['total_reviews'].unique(),height=250, width=250)
 
