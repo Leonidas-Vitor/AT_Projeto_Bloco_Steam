@@ -57,7 +57,7 @@ num_repeats = 1000
 st.subheader('Modelo de regressão',divider=True)
 st.markdown(at_lib.GetBasicTextMarkdown(20,
 f'''
-Os dados estão sendo separados em 70% para treino e 30% para teste, sendo escalonados com o MinMaxScaler.\
+Os dados estão sendo separados em 70% para treino e 30% para teste, sendo escalonados com o MinMaxScaler. \
 O modelo utilizado é o LinearRegression do sklearn e a métrica utilizada é o MSE, RMSE e o MAE médios \
 de {num_repeats} repetições. O processo pode demorar um pouco, por favor aguarde.
 '''),unsafe_allow_html=True)
@@ -136,14 +136,14 @@ cT = st.slider('Taxa de conversão: Quanto cada review é convertido em vendas?'
 
 pT = st.slider('Taxa da publicadora: Quantos porcentos do faturamento pertence a publicadora? (%)',min_value=0,max_value=100,value=0,step=1)
 
-steamCut = predReviews*ct*0.7
+steamCut = predReviews*cT*0.7
 euaTaxCut = steamCut * 0.7
-publisherCut = euaTaxCut * (1-(pt/100))
+publisherCut = euaTaxCut * (1-(pT/100))
 brTaxCut = publisherCut * 0.845
 
 data = {##Falta IOF, e SPread
     'Etapa': ['Steam - 30%', 'EUA Imposto - 30%', f'Publicadora - {pt}%', 'Imposto sob faturamento - 15,5%'],
-    'Quantidade': [steamCut, euaTaxCut, publisherCut, 10]
+    'Quantidade': [steamCut, euaTaxCut, publisherCut, brTaxCut]
 }
 
 # Cria um gráfico de funil
