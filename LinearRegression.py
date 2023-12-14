@@ -47,6 +47,7 @@ with st.expander('Dataset preparado'):
 
 st.table(df_steam.describe())
 
+
 x = df_steam[['total_duration','price','total_supported_languages', 'total_achievements']]
 y = df_steam['total_reviews']
 
@@ -67,12 +68,14 @@ reviews = []
 
 game_example = pd.DataFrame({'total_duration': [15], 'price': [14.99], 'total_supported_languages': [3], 'total_achievements': [150]})
 
+MinMax_scaler = MinMaxScaler()
+
 game_example_scaled = MinMax_scaler.fit_transform(game_example)
 
 for _ in range(num_repeats):
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
 
-    MinMax_scaler = MinMaxScaler()
+
 
     # Aplicando o Scaler
     x_train_scaled = MinMax_scaler.fit_transform(x_train)
