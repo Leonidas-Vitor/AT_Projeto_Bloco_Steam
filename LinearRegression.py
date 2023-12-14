@@ -104,6 +104,7 @@ for _ in range(num_repeats):
 #        st.table(x_test_scaled)
 #st.dataframe(x_train_scaled,hide_index=True,height=250)
 
+st.table(reviews)
 
 #st.text(f"Mean Squared Error: {mse}")
 
@@ -116,7 +117,7 @@ with cols[2]:
 with cols[3]:
     st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.mean(mae_scores):.2f}')
 
-st.markdown(at_lib.GetBasicTextMarkdown(25,f'''{np.mean(reviews)}'''),unsafe_allow_html=True)
+st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Previsão de reviews: {np.mean(reviews)}'''),unsafe_allow_html=True)
 st.subheader('Gráficos',divider=True)
 
 with st.expander('Gráficos de Dispersão'):
