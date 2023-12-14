@@ -25,7 +25,7 @@ st.header('Regressão linear',divider=True)
 #    Teste2
 #    '''),unsafe_allow_html=True)
 
-df_steam = pd.read_csv('SteamDatasetForStreamlitReadyForRegression.csv',engine='pyarrow')
+df_steam = pd.read_csv('SteamDatasetForStreamlitReadyForRegressionLog.csv',engine='pyarrow')
 
 #with st.expander('Dataset não filtrado'):
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -123,7 +123,7 @@ with cols[3]:
     st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.mean(mae_scores):.2f}')
 st.subheader('Estimativa de faturamento',divider=True)
 
-st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Previsão de reviews: {int(np.mean(reviews))}'''),unsafe_allow_html=True)
+st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Previsão de reviews: {int(np.exp(np.mean(reviews)-1))}'''),unsafe_allow_html=True)
 
 data = {
     'Etapa': ['Visitas', 'Cliques', 'Leads', 'Vendas'],
