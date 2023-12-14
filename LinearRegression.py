@@ -85,8 +85,8 @@ for _ in range(num_repeats):
 
     y_pred = modelo_regressao.predict(x_test_scaled)
     
-    st.write(y_pred)
-    
+    #st.write(y_pred)
+
     mse = mean_squared_error(y_test, y_pred)
     mse_scores.append(mse)
     #rmse = np.sqrt(mse)
