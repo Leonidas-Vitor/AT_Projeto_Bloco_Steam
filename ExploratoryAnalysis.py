@@ -59,15 +59,21 @@ def ContainTag(tags):
 
 df_steam = df_steam[df_steam['tags'].apply(ContainTag)]
 
+genre = st.radio('',['Apenas jogos com single-player'],0,horizontal = True)
 cols = st.columns(3)
 with cols[0]:
     sp = st.checkbox('Incluir jogos com single-player', value=True)
+    if sp == False:
+        df_steam = df_steam[df_steam['hasSingleplayer'] == sp]
 with cols[1]:
     mp = st.checkbox('Incluir jogos com multi-player', value=False)
+    if mp == False:
+        df_steam = df_steam[df_steam['hasMultiplayer'] == mp]
 with cols[2]:
     cp =st.checkbox('Incluir jogos com co-op', value=False)
+    if cp == False:
+        df_steam = df_steam[df_steam['hasCoop'] == cp]
 
-df_steam = df_steam[(df_steam['hasSingleplayer'] == sp) & (df_steam['hasMultiplayer'] == mp) & (df_steam['hasCoop'] == cp)]
 
 df_steam_numerics = df_steam.drop(columns=['name','release_date','tags','main_genre','hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent'])
 st.subheader('Filtros',divider=True)
@@ -115,7 +121,7 @@ for r in range(x_plots):
         
 plt.subplots_adjust(wspace=0.4, hspace=0.2)
 st.pyplot(fig)
-st.subheader('Boxplot',divider=True)
+st.subheader('Histograma',divider=True)
 
 fig, axs = plt.subplots(x_plots,y_plots,figsize=(15, 10))
 
@@ -127,6 +133,7 @@ for r in range(x_plots):
             i = i + 1
             colName = df_steam_numerics.columns[i]
         sb.histplot(data=df_steam_numerics,x=colName,  ax=axs[r, c], color=sb.color_palette()[i % len(sb.color_palette())],shrink=0.85,alpha=1)
+        i = i + 1
         
 plt.subplots_adjust(wspace=0.4, hspace=0.2)
 st.pyplot(fig)
