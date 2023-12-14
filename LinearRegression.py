@@ -120,9 +120,9 @@ with cols[2]:
     st.metric(label=f"RMSE de {num_repeats} repetições", value=f'{np.sqrt(np.mean(mse_scores)):.2f}')
 with cols[3]:
     st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.mean(mae_scores):.2f}')
+st.subheader('Estimativa de faturamento',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Previsão de reviews: {int(np.mean(reviews))}'''),unsafe_allow_html=True)
-st.subheader('Estimativa de faturamento',divider=True)
 
 data = {
     'Etapa': ['Visitas', 'Cliques', 'Leads', 'Vendas'],
@@ -138,7 +138,7 @@ df = df.sort_values(by='Quantidade', ascending=False)
 # Cria o gráfico de funil
 fig, ax = plt.subplots(figsize=(10,5))
 plt.figure(figsize=(10, 5))
-sns.barplot(x='Quantidade', y='Etapa', data=df, orient='h', palette='Blues',ax = ax)
+sb.barplot(x='Quantidade', y='Etapa', data=df, orient='h', palette='Blues',ax = ax)
 plt.gca().invert_yaxis()  # Inverte o eixo y para que o funil seja de cima para baixo
 plt.xlabel('Quantidade')
 plt.title('Gráfico de Funil')
