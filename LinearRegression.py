@@ -8,6 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import StreamlitCustomLibrary as at_lib
+import plotly.graph_objects as go
 
 at_lib.SetPageConfig()
 at_lib.SetTheme()
@@ -129,21 +130,15 @@ data = {
     'Quantidade': [1000, 200, 50, 10]
 }
 
-# Cria um DataFrame a partir dos dados
-df = pd.DataFrame(data)
+# Cria um gráfico de funil
+fig = go.Figure(go.Funnel(
+    y = data['Etapa'],
+    x = data['Quantidade'],
+    textinfo = "value+percent initial",
+    marker = {"color": ["deepskyblue", "lightsalmon", "tan", "teal"]},
+))
 
-# Ordena o DataFrame em ordem decrescente de quantidade
-df = df.sort_values(by='Quantidade', ascending=False)
-
-# Cria o gráfico de funil
-fig, ax = plt.subplots(figsize=(10,5))
-plt.figure(figsize=(10, 5))
-sb.barplot(x='Quantidade', y='Etapa', data=df, orient='h', palette='Blues',ax = ax)
-plt.gca().invert_yaxis()  # Inverte o eixo y para que o funil seja de cima para baixo
-plt.xlabel('Quantidade')
-plt.title('Gráfico de Funil')
-
-st.pyplot(fig)
+st.plotly_chart(fig)
 st.subheader('Gráficos de avaliação do modelo',divider=True)
 
 with st.expander('Gráficos de Dispersão'):
