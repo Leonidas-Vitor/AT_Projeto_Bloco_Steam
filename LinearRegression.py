@@ -63,6 +63,7 @@ de {num_repeats} repetições. O processo pode demorar um pouco, por favor aguar
 '''),unsafe_allow_html=True)
 
 mse_scores = []
+rmse_scores = []
 mae_scores = []
 
 reviews = []
@@ -93,7 +94,10 @@ for _ in range(num_repeats):
 
     mse = mean_squared_error(y_test, y_pred)
     mse_scores.append(mse)
-    #rmse = np.sqrt(mse)
+
+    rmse = np.sqrt(mse)
+    rmse_scores.append(rmse)
+
     mae = mean_absolute_error(y_test, y_pred)
     mae_scores.append(mae)
 
@@ -116,18 +120,30 @@ for _ in range(num_repeats):
 cols = st.columns([0.15,0.3,0.3,0.3])
 #Possui dados de categoria?
 with cols[1]:
-    st.metric(label=f"MSE médio de {num_repeats} repetições", value=f'{np.exp(np.mean(mse_scores)):.2f}')
+    st.metric(label=f"MSE médio de {num_repeats} repetições", value=f'{np.mean(np.exp(mse_scores)):.2f}')
 with cols[2]:
-    st.metric(label=f"RMSE de {num_repeats} repetições", value=f'{np.exp(np.sqrt(np.mean(mse_scores))):.2f}')
+    st.metric(label=f"RMSE de {num_repeats} repetições", value=f'{np.mean(np.exp(rmse_scores)):.2f}')
 with cols[3]:
-    st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.exp(np.mean(mae_scores)):.2f}')
+    st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.mean(np.exp(mae_scores)):.2f}')
 st.subheader('Estimativa de faturamento',divider=True)
 
-st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Previsão de reviews: {int(np.exp(np.mean(reviews))-1)}'''),unsafe_allow_html=True)
+predReviews = int(np.mean(np.exp(reviews))-1)
+st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Previsão de reviews: {predReviews}'''),unsafe_allow_html=True)
 
-data = {
-    'Etapa': ['Visitas', 'Cliques', 'Leads', 'Vendas'],
-    'Quantidade': [1000, 200, 50, 10]
+##Explicar a regra dos 30
+
+cT = st.slider('Taxa de conversão: Quanto cada review é convertido em vendas?',min_value=1,max_value=100,value=30,step=1)
+
+pT = st.slider('Taxa da publicadora: Quantos porcentos do faturamento pertence a publicadora? (%)',min_value=0,max_value=100,value=0,step=1)
+
+steamCut = predReviews*ct*0.7
+euaTaxCut = steamCut * 0.7
+publisherCut = euaTaxCut * (1-(pt/100))
+brTaxCut = publisherCut * 0.845
+
+data = {##Falta IOF, e SPread
+    'Etapa': ['Steam - 30%', 'EUA Imposto - 30%', f'Publicadora - {pt}%', 'Imposto sob faturamento - 15,5%'],
+    'Quantidade': [steamCut, euaTaxCut, publisherCut, 10]
 }
 
 # Cria um gráfico de funil
