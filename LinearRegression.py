@@ -50,17 +50,18 @@ st.table(df_steam.describe())
 x = df_steam[['total_duration','price','total_supported_languages', 'total_achievements']]
 y = df_steam['total_reviews']
 
+num_repeats = 1000
 
 st.subheader('Modelo de regressão',divider=True)
 st.markdown(at_lib.GetBasicTextMarkdown(20,
-'''
+f'''
 Os dados estão sendo separados em 70% para treino e 30% para teste, sendo escalonados com o MinMaxScaler.\
-O modelo utilizado é o LinearRegression do sklearn e a métrica utilizada é o MSE, RMSE e o MAE médios\
-de 500 repetições. O processo pode demorar um pouco, por favor aguarde.
+O modelo utilizado é o LinearRegression do sklearn e a métrica utilizada é o MSE, RMSE e o MAE médios \
+de {num_repeats} repetições. O processo pode demorar um pouco, por favor aguarde.
 '''),unsafe_allow_html=True)
 
 
-num_repeats = 500
+
 mse_scores = []
 mae_scores = []
 
@@ -108,3 +109,34 @@ with cols[2]:
     st.metric(label=f"RMSE de {num_repeats} repetições", value=f'{np.sqrt(np.mean(mse_scores)):.2f}')
 with cols[3]:
     st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.mean(mae_scores):.2f}')
+st.subheader('Gráficos',divider=True)
+
+with st.expander('Gráficos de Dispersão'):
+    for col in x_test.columns:
+        if col == '':
+            continue
+        fig, ax = plt.subplots(figsize=(10,5))
+        sb.scatterplot(x=x_test[col], y=y_test, color='yellow', label='Real',ax = ax,alpha=0.5)
+        sb.scatterplot(x=x_test[col], y=y_pred, color='blue', label='Previsto',ax = ax,alpha=0.5)
+        ax.ticklabel_format(style='plain', axis='both')
+        st.pyplot(fig)
+
+with st.expander('Gráficos de regressão'):
+    for col in x_test.columns:
+        if col == '':
+            continue
+        st.text(col)
+        fig, ax = plt.subplots(figsize=(10,5))
+        df_resultado = pd.DataFrame({col: x_test[col], 'Real': y_test, 'Previsto': y_pred})
+        t = sb.lmplot(data=df_resultado,x=col, y='Previsto', aspect=2, height=6)
+        sb.scatterplot(x=x_test[col], y=y_test, color='yellow', label='Real',ax = t.ax,alpha=0.5)
+        st.pyplot(t)
+
+with st.expander('Gráfico de Resíduos'):
+    for col in x_test.columns:
+        if col == '':
+            continue
+        fig, ax = plt.subplots(figsize=(10,5))
+        residuos = y_test - y_pred
+        sb.scatterplot(x=x_test[col], y=residuos,ax = ax)
+        st.pyplot(fig)
