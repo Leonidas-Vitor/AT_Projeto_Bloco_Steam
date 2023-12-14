@@ -34,15 +34,6 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     
 st.dataframe(df_steam,hide_index=True,height=250)
 
-option = st.selectbox(
-    'Escolha o gênero do jogo para gerar a regressão linear',(
-    'Roguelike Deckbuilder','4X',
-    'Simulation','Management', #=> Esses dois são juntos
-    'Open World Survival Craft','City Builder','RPG','Rogue-like','Metroidvania','Dungeon Crawler','Souls-like',
-    'Visual Novel','Twin Stick Shooter','Horror','Sexual Content','Card Battler','Beat \'em up','FPS','Shoot \'Em Up'
-    'Tower Defense','Match 3','Puzzle-Platformer','Puzzle','2D Platformer','3D Platformer','Battle Royale'),index=7)
-
-df_filtred = df_steam[df_steam['main_genre'] == option]
 
 #---------------- Faltou lugar para upar um novo csv
 

@@ -19,6 +19,8 @@ show_pages(
         Page('DataCleaning.py','Limpeza dos dados',':broom:'),
         Page('ExploratoryAnalysis.py','Análise exploratória',":bar_chart:"),
         Page('LinearRegression.py','Regressão linear',":bulb:"),
+        #Page('Conclusion.py','Conclusão',":clap:")
+        #Page('Problems.py','Problemas',":books:") #-> Passar para cá o relatório de problemas de qualidade de dados e etc?
     ]
 )
 
@@ -29,7 +31,7 @@ st.markdown(html_p % tuple([35,"ESCOLA SUPERIOR DE TECNOLOGIA"]),unsafe_allow_ht
 st.markdown(html_p % tuple([35,"AT - Projeto de Bloco II"]),unsafe_allow_html=True)
 st.divider()
 
-github_link = '''https://github.com/Leonidas-Vitor/Steam_Scrapper.git'''
+github_link = '''https://github.com/Leonidas-Vitor/AT_Projeto_Bloco_Streamlit'''
 email = '''leonidas.almeida@al.infnet.edu.br'''
 
 columns = st.columns([0.6,0.4])
