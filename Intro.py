@@ -54,14 +54,15 @@ with columns[1]:
 
 #at_lib.ReadCSV('df_redux','SteamDatasetForStreamlit.csv')
 
-tabs = st.tabs(['Informes','Navegação','Observações'])
+tabs = st.tabs(['Navegação','Informes','Observações'])
+
 with tabs[0]:
-    st.write('''Para tornar a aplicação mais rápida os dados são carregados apenas uma vez e então manipulados\
-        e armazenados na memória, por isso aplicar um rerun irá modificar gráficos, tabelas e valores, pois os\
-        dados já foram modificados anteriormente e o rerun não os carrega novamente. Recomenda-se atualizar a página\
-        (F5) ao invés de aplicar um rerun.''')
-with tabs[1]:
     st.write('''A aplicação foi organizada em páginas, que podem ser acessadas pela barra lateral à esquerda.''')
+with tabs[1]:
+    st.write('''Para tornar a aplicação mais rápida os dados a medida que eram processados foram salvos em um arquivo csv,
+    que são carregados a cada página, ao final de cada página que altera os dados é possível baixar o arquivo csv da manipulação
+    resultante. Na página de análise exploratória que é mais interativa, é possível manter os dados resultantes da interação 
+    na memória e então utilizá-los na página de regressão linear.''')
 with tabs[2]:
     st.markdown('''<p>
     Infelizmente não foi possível terminar totalmente esse trabalho/estudo a tempo, por isso algumas funcionalidades\
