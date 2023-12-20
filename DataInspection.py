@@ -75,7 +75,7 @@ with st.expander("Amostra do dataset original"):
     df_sample = pd.read_csv('SteamDatasetRawSample.csv',engine='pyarrow')
     st.dataframe(df_sample,hide_index=True)
 
-st.subheader('Dataset reduzido')
+st.subheader('Dataset reduzido',divider = True)
 
 #try:
 #    df_steam = st.session_state['df_steam'].copy()

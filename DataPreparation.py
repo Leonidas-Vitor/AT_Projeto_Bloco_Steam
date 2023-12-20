@@ -181,7 +181,9 @@ with st.expander('Amostra dos apps removidos'):
 
 df_steam = df_steam[df_steam['categories'] != '']
 
-st.divider()
+#st.divider()
+
+st.subheader('Criação de novas colunas',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''

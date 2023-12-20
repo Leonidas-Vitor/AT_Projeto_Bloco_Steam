@@ -4,6 +4,7 @@ import pandas as pd
 import seaborn as sb
 import streamlit as st
 import StreamlitCustomLibrary as at_lib
+import plotly.graph_objects as go
 
 at_lib.SetPageConfig()
 at_lib.SetTheme()
@@ -18,8 +19,6 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''),unsafe_allow_html=True)
 
 df_steam = pd.read_csv('SteamDatasetForStreamlitCleaned.csv',engine='pyarrow')
-
-df_steam['total_reviews'] = np.log(df_steam['total_reviews'] + 1)
 
 #st.dataframe(df_steam['total_reviews'].unique(),height=250, width=250)
 
@@ -39,6 +38,51 @@ st.divider()
 x_plots = 2
 y_plots = 3
 
+
+#df_steam['total_reviews'] = np.log(df_steam['total_reviews'] + 1)
+st.subheader('Botões',divider=True)
+
+logData = np.log(df_steam['total_reviews'].copy() + 1)
+noLogData = df_steam['total_reviews'].copy()
+
+cols = st.columns(2)
+with cols[0]:
+    if st.button('Reiniciar filtros'):
+        st.experimental_rerun()
+with cols[1]:
+    on = st.toggle('Converter total_reviews para log',value=True)
+    if on:
+        df_steam['total_reviews'] = logData.copy()
+    else:
+        df_steam['total_reviews'] = noLogData.copy()
+        #df_steam['total_reviews'] = np.exp(df_steam['total_reviews']) - 1
+st.subheader('Variável alvo',divider=True)
+
+cols = st.columns(2)
+with cols[0]:
+    fig = go.Figure(data=[go.Histogram(x=noLogData,marker=dict(color='ForestGreen'))])
+    fig.update_layout(bargap=0.2, title='Histograma da variável alvo (total_reviews)')
+    st.plotly_chart(fig,use_container_width=True)
+    fig = go.Figure(data=go.Box(y=noLogData, name='total_reviews',marker=dict(color='ForestGreen')))
+    fig.update_layout(title='Boxplot da variável alvo (total_reviews)',width=600,height=600)
+    st.plotly_chart(fig,use_container_width=True)
+
+with cols[1]:
+    fig = go.Figure(data=[go.Histogram(x=logData,marker=dict(color='RoyalBlue'))])
+    fig.update_layout(bargap=0.2, title='Histograma da variável alvo (total_reviews) em log')
+    st.plotly_chart(fig,use_container_width=True)
+    fig = go.Figure(data=go.Box(y=logData, name='total_reviews',marker=dict(color='RoyalBlue')))
+    fig.update_layout(title='Boxplot da variável alvo (total_reviews) em log',width=600,height=600)
+    st.plotly_chart(fig,use_container_width=True)
+
+st.markdown(at_lib.GetBasicTextMarkdown(20,
+    '''
+    Como é possível observar, o comportamento da variável alvo possui uma muito assimétrico, com uma cauda muito\
+    longa para a direita, o que indica que existem muitos jogos com poucas reviews e poucos jogos com muitas reviews.\
+    Para tentar reduzir esse problema, foi aplicado o log na variável alvo, o que reduziu a cauda direita, apesar de\
+    o comportamento assimétrico permanecer, ele foi bem suavizado.
+    '''),unsafe_allow_html=True)
+
 st.subheader('Justificativa dos filtros',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -50,14 +94,6 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     quantidade amostras de cada gênero, isso pode enviesar o modelo e levar a conclusões muito distorcidas da realidade\
     para o jogo que se deseja prever.
     '''),unsafe_allow_html=True)
-
-
-st.subheader('Botões',divider=True)
-
-cols = st.columns(2)
-with cols[0]:
-    if st.button('Reiniciar filtros'):
-        st.experimental_rerun()
 st.subheader('Filtros categóricos',divider=True)
 
 tag = st.selectbox(
@@ -94,15 +130,17 @@ with cols[2]:
 
 
 df_steam_numerics = df_steam.drop(columns=['name','release_date','tags','main_genre','hasSingleplayer','hasMultiplayer','hasCoop','self_published_percent'])
-st.subheader('Filtros',divider=True)
+st.subheader('Filtros numéricos',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(25,
     '''
     Aqui estão alguns controladores para filtrar os dados, removendo outliers de cada coluna. Mais abaixo estão os gráficos\
     que permitem visualizar os dados filtrados. 
     '''),unsafe_allow_html=True)
-
-min_max_total_reviews = st.slider("Número total de reviews:", min_value =df_steam['total_reviews'].min(), max_value =df_steam['total_reviews'].max(),value=(0.0,10000.0))
+try:
+    min_max_total_reviews = st.slider("Número total de reviews:", min_value =df_steam['total_reviews'].min(), max_value =df_steam['total_reviews'].max(),value=(0.0,9.25))#10000.0))
+except:
+    min_max_total_reviews = st.slider("Número total de reviews:", min_value =df_steam['total_reviews'].min(), max_value =df_steam['total_reviews'].max(),value=(0,10000))
 df_steam_numerics = df_steam_numerics[(df_steam_numerics['total_reviews'] >= min_max_total_reviews[0]) & (df_steam_numerics['total_reviews'] <= min_max_total_reviews[1])]
 
 cols = st.columns(3)
@@ -209,9 +247,17 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 
 st.dataframe(df_steam_numerics,height=250,use_container_width=True)
 
-st.download_button(
-    label="Baixar o dataset preparado",
-    data=df_steam_numerics.to_csv(index=True),
-    file_name='SteamDatasetForStreamlitReadyForRegression.csv',
-    mime='text/csv',
-)
+cols = st.columns(2)
+
+with cols[0]:
+    st.download_button(
+        label="Baixar o dataset preparado",
+        data=df_steam_numerics.to_csv(index=True),
+        file_name='SteamDatasetForStreamlitReadyForRegression.csv',
+        mime='text/csv',
+    )
+
+with cols[1]:
+    if st.button("Usar esse dataset para treinar o modelo"):
+        st.session_state['df_steam_numerics'] = df_steam_numerics
+        

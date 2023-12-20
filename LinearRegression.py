@@ -25,7 +25,17 @@ st.header('Regressão linear',divider=True)
 #    Teste2
 #    '''),unsafe_allow_html=True)
 
-df_steam = pd.read_csv('SteamDatasetForStreamlitReadyForRegressionLog.csv',engine='pyarrow')
+on = st.toggle('Usar dataset da página anterior')
+
+if on:
+    try:
+        df_steam = st.session_state['df_steam_numerics']
+        st.warning('''Utilizando o dataset da página anterior, para usar o dataset padrão desmarque a opção acima''', icon="⚠️")
+    except:
+        st.warning('''Dataset gerado na página anterior não encontrado''', icon="⚠️")
+        df_steam = pd.read_csv('SteamDatasetForStreamlitReadyForRegressionLog.csv',engine='pyarrow')
+else:
+    df_steam = pd.read_csv('SteamDatasetForStreamlitReadyForRegressionLog.csv',engine='pyarrow')
 
 #with st.expander('Dataset não filtrado'):
 st.markdown(at_lib.GetBasicTextMarkdown(20,
@@ -125,25 +135,40 @@ with cols[2]:
     st.metric(label=f"RMSE de {num_repeats} repetições", value=f'{np.mean(np.exp(rmse_scores)):.2f}')
 with cols[3]:
     st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.mean(np.exp(mae_scores)):.2f}')
-st.subheader('Estimativa de faturamento',divider=True)
+st.subheader('Estimativa de faturamento em dólares',divider=True)
 
 predReviews = int(np.mean(np.exp(reviews))-1)
 st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Previsão de reviews: {predReviews}'''),unsafe_allow_html=True)
 
-##Explicar a regra dos 30
+st.markdown(at_lib.GetBasicTextMarkdown(20,
+'''Baseado no número de reviews podemos estimar o quanto um jogo vendeu e por conseguinte seu faturamento, usando um\
+    número de conversão de reviews para vendas, que em média é na casa de 30 vendas para cada review.\
+    Também é importante usar um preço médio para o jogo MENOR que o preço de venda, pois por diferenças de preços regionais\
+    e promoções o preço médio de venda é menor que o preço de venda nominal.
+'''),unsafe_allow_html=True)
+
+html_p = """<p style='text-align: center; font-size:%spx;'><b>%s</b></p>"""
+link = 'https://newsletter.gamediscover.co/p/how-that-game-sold-on-steam-using?s=r'
+st.markdown(html_p % tuple([15,f'Referência: <a href={link}>Link para o artigo</a>']),unsafe_allow_html = True)
 
 cT = st.slider('Taxa de conversão: Quanto cada review é convertido em vendas?',min_value=1,max_value=100,value=30,step=1)
 
+priceMedian = st.slider('Preço: Qual o preço médio do jogo?',min_value=0.9,max_value=69.9,value=10.0,step=1.0)
+
 pT = st.slider('Taxa da publicadora: Quantos porcentos do faturamento pertence a publicadora? (%)',min_value=0,max_value=100,value=0,step=1)
 
-steamCut = predReviews*cT*0.7
+raw = predReviews*cT*priceMedian
+steamCut = raw*0.7
 euaTaxCut = steamCut * 0.7
 publisherCut = euaTaxCut * (1-(pT/100))
-brTaxCut = publisherCut * 0.845
+spread = publisherCut * 0.98
+iof =  spread * (1-0.006)
+brTaxCut = iof * 0.845
 
-data = {##Falta IOF, e SPread
-    'Etapa': ['Steam - 30%', 'EUA Imposto - 30%', f'Publicadora - {pT}%', 'Imposto sob faturamento - 15,5%'],
-    'Quantidade': [steamCut, euaTaxCut, publisherCut, brTaxCut]
+data = {
+    'Etapa': ['Faturamento Bruto','Steam - 30%', 'EUA Imposto - 30%', f'Publicadora - {pT}%', 
+    'IOF - 0.4%','Spread - 2%','Imposto sob faturamento - 15,5%'],
+    'Quantidade': [raw, steamCut, euaTaxCut, publisherCut, round(spread), round(iof), round(brTaxCut)]
 }
 
 # Cria um gráfico de funil
@@ -151,9 +176,9 @@ fig = go.Figure(go.Funnel(
     y = data['Etapa'],
     x = data['Quantidade'],
     #textinfo = "value+percent initial",
-    marker = {"color": ["deepskyblue", "lightsalmon", "tan", "teal"],
-    "line": {"width": [4, 2, 2, 3, 1], "color": ["wheat", "wheat", "blue", "wheat"]}},
-    connector = {"line": {"color": "royalblue", "dash": "dot", "width": 3},"fillcolor":'white'},
+    marker = {"color": ["MediumSeaGreen", "IndianRed", "RebeccaPurple", "SlateGrey", "SaddleBrown", "RoyalBlue", "gold"],
+    "line": {"width": [2, 2, 2, 2, 2,2,4], "color": ["white", "white", "white", "white","white","white", "SteelBlue"]}},
+    connector = {"line": {"color": "SteelBlue", "dash": "solid", "width": 5},"fillcolor":'white'},
 ))
 
 st.plotly_chart(fig, use_container_width=True)
