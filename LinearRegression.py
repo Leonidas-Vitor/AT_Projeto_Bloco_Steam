@@ -33,9 +33,9 @@ if on:
         st.warning('''Utilizando o dataset da página anterior, para usar o dataset padrão desmarque a opção acima''', icon="⚠️")
     except:
         st.warning('''Dataset gerado na página anterior não encontrado''', icon="⚠️")
-        df_steam = pd.read_csv('SteamDatasetForStreamlitReadyForRegressionLog.csv',engine='pyarrow')
+        df_steam = pd.read_csv('SteamDatasetForStreamlitReadyForRegression.csv.csv',engine='pyarrow')
 else:
-    df_steam = pd.read_csv('SteamDatasetForStreamlitReadyForRegressionLog.csv',engine='pyarrow')
+    df_steam = pd.read_csv('SteamDatasetForStreamlitReadyForRegression.csv.csv',engine='pyarrow')
 
 #with st.expander('Dataset não filtrado'):
 st.markdown(at_lib.GetBasicTextMarkdown(20,
