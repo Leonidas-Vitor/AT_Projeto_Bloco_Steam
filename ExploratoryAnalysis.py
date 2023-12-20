@@ -227,9 +227,9 @@ st.subheader('Conclusões',divider=True)
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
 '''
-Apartir dos diversos gráficos gerados, podemos concluir que as variáveis que mais influenciam no número\
+Apartir dos diversos gráficos gerados, podemos concluir que as variáveis que mais influenciam no número \
 total de reviews para jogos do gênero rogue-lite/rogue-like são: \'total_duration\', \'price\', \
-\'total_supported_languages\' e \'total_achievements\'. Portanto elas que serão utilizadas para treinar\
+\'total_supported_languages\' e \'total_achievements\'. Portanto elas que serão utilizadas para treinar \
 o modelo de regressão linear na próxima página.
 '''),unsafe_allow_html=True)
 
