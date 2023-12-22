@@ -4,7 +4,6 @@ import pandas as pd
 import seaborn as sb
 import streamlit as st
 import StreamlitCustomLibrary as at_lib
-import pyarrow as pa
 
 at_lib.SetPageConfig()
 at_lib.SetTheme()

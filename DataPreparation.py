@@ -5,7 +5,6 @@ import seaborn as sb
 import streamlit as st
 import ast
 import StreamlitCustomLibrary as at_lib
-import json
 
 at_lib.SetPageConfig()
 at_lib.SetTheme()
@@ -444,7 +443,6 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''),unsafe_allow_html=True)
 
 df_steam['achievements'] = df_steam['achievements'].apply(ParseData)
-#df_steam['achievements'] = df_steam['achievements'].apply(json.loads)
 df_steam['total_achievements'] = df_steam['achievements'].str['total']
 
 df_steam['total_achievements'].fillna(0)
