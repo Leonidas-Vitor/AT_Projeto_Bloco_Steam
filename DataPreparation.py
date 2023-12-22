@@ -462,30 +462,31 @@ st.divider()
 df_steam.drop(columns=['is_free','genres','supported_languages','categories','positive','negative',
     'developers','publishers','achievements','steamspy_owners',''],inplace=True)
 
-try:
-    df_steam['id'] = df_steam['id'].astype(int)
-except Exception as e:
-    pass
 
-try:
-    df_steam['total_reviews'] = df_steam['total_reviews'].astype(int)
-except Exception as e:
-    pass
+#try:
+#    df_steam['id'] = df_steam['id'].astype(int)
+#except Exception as e:
+#    pass
 
-try:
-    df_steam['total_supported_languages'] = df_steam['total_supported_languages'].astype(int) 
-except Exception as e:
-    pass
+#try:
+#    df_steam['total_reviews'] = df_steam['total_reviews'].astype(int)
+#except Exception as e:
+#    pass
 
-try:
-    df_steam['total_achievements'] = df_steam['total_achievements'].astype(int)
-except Exception as e:
-    pass
+#try:
+#    df_steam['total_supported_languages'] = df_steam['total_supported_languages'].astype(int) 
+#except Exception as e:
+#    pass
 
-try:
-    df_steam['release_date'] = df_steam['release_date'].astype('datetime64[ns]')
-except Exception as e:
-    pass
+#try:
+#    df_steam['total_achievements'] = df_steam['total_achievements'].astype(int)
+#except Exception as e:
+#    pass
+
+#try:
+#    df_steam['release_date'] = df_steam['release_date'].astype('datetime64[ns]')
+#except Exception as e:
+#    pass
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
@@ -494,7 +495,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 
 st.dataframe(df_steam,hide_index=True,height=250)
 
-st.table(df_steam.dtypes)
+#st.table(df_steam.dtypes)
 
 st.download_button(
     label="Baixar o dataset preparado",
