@@ -424,7 +424,7 @@ def ParseData(d):
     try:
         return ast.literal_eval(d)
     except Exception as e:
-        return d
+        return {}
 
 df_steam['developers'] = df_steam['developers'].apply(ParseData)
 df_steam['publishers'] = df_steam['publishers'].apply(ParseData)
@@ -443,8 +443,8 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     disponíveis.
     '''),unsafe_allow_html=True)
 
-df_steam['achievements'] = df_steam['achievements'].apply(json.dumps)
-df_steam['achievements'] = df_steam['achievements'].apply(json.loads)
+df_steam['achievements'] = df_steam['achievements'].apply(ParseData)
+#df_steam['achievements'] = df_steam['achievements'].apply(json.loads)
 df_steam['total_achievements'] = df_steam['achievements'].str['total']
 
 df_steam['total_achievements'].fillna(0)
@@ -463,30 +463,35 @@ df_steam.drop(columns=['is_free','genres','supported_languages','categories','po
     'developers','publishers','achievements','steamspy_owners',''],inplace=True)
 
 
-#try:
-#    df_steam['id'] = df_steam['id'].astype(int)
-#except Exception as e:
-#    pass
+try:
+    df_steam['id'] = df_steam['id'].astype(int)
+except Exception as e:
+    print(e)
+    pass
 
-#try:
-#    df_steam['total_reviews'] = df_steam['total_reviews'].astype(int)
-#except Exception as e:
-#    pass
+try:
+    df_steam['total_reviews'] = df_steam['total_reviews'].astype(int)
+except Exception as e:
+    print(e)
+    pass
 
-#try:
-#    df_steam['total_supported_languages'] = df_steam['total_supported_languages'].astype(int) 
-#except Exception as e:
-#    pass
+try:
+    df_steam['total_supported_languages'] = df_steam['total_supported_languages'].astype(int) 
+except Exception as e:
+    print(e)
+    pass
 
-#try:
-#    df_steam['total_achievements'] = df_steam['total_achievements'].astype(int)
-#except Exception as e:
-#    pass
+try:
+    df_steam['total_achievements'] = df_steam['total_achievements'].astype(int)
+except Exception as e:
+    print(e)
+    pass
 
-#try:
-#    df_steam['release_date'] = df_steam['release_date'].astype('datetime64[ns]')
-#except Exception as e:
-#    pass
+try:
+    df_steam['release_date'] = df_steam['release_date'].astype('datetime64[ns]')
+except Exception as e:
+    print(e)
+    pass
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     f'''
@@ -495,7 +500,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
 
 st.dataframe(df_steam,hide_index=True,height=250)
 
-#st.table(df_steam.dtypes)
+st.table(df_steam.dtypes.astype(str))
 
 st.download_button(
     label="Baixar o dataset preparado",

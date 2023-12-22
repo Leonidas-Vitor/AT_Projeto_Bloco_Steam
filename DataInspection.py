@@ -4,6 +4,7 @@ import pandas as pd
 import seaborn as sb
 import streamlit as st
 import StreamlitCustomLibrary as at_lib
+import pyarrow as pa
 
 at_lib.SetPageConfig()
 at_lib.SetTheme()
@@ -77,14 +78,8 @@ with st.expander("Amostra do dataset original"):
 
 st.subheader('Dataset reduzido',divider = True)
 
-#try:
-#    df_steam = st.session_state['df_steam'].copy()
-#except Exception as e:
-#    df_steam = at_lib.ReadCSV('df_steam','SteamDatasetForStreamlit.csv').copy()
-
 df_steam = pd.read_csv('SteamDatasetForStreamlit.csv',engine='pyarrow')
-    
-#= at_lib.ReadCSV('df_steam','SteamDatasetForStreamlit.csv')
+
 st.dataframe(df_steam,hide_index=True,height=250)
 
 #buffer = io.StringIO()
@@ -107,7 +102,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     Esses são os tipos de cada coluna do dataset nesse momento:
     '''),unsafe_allow_html=True)
     
-st.table(df_steam.dtypes)
+st.table(df_steam.dtypes.astype(str))
 
 st.markdown(at_lib.GetBasicTextMarkdown(20,
     '''
