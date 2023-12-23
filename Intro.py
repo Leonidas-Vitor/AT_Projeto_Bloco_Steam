@@ -40,14 +40,16 @@ with columns[0]:
     st.markdown(html_p % tuple([25,f'E-mail: <a href= mailto:{email}>{email}</a>']),unsafe_allow_html = True)
     st.markdown(html_p % tuple([25,f'GitHub: <a href={github_link}>Link para o repositório</a>']),unsafe_allow_html = True)
     st.markdown(html_p % tuple([25,'Introdução:']),unsafe_allow_html = True)
-    st.text('''
-        Esta aplicação foi criada com o propósito de analisar os jogos da loja Steam e então estimar 
-        quantas  vendas um novo jogo hipotético teria, baseado em suas principais características e 
-        então avaliar se vale o investimento nele ou não.
+    st.markdown('''
+        Esta aplicação foi criada com o propósito de analisar  
+        os jogos da loja Steam e então estimar quantas  vendas  
+        um novo jogo hipotético teria, baseado em suas principais  
+        características e então avaliar se vale o investimento nele  
+        ou não.
         ''')
-    st.text('''
-    O modelo de regressão linear foi escolhido por ser um modelo simples e de fácil interpretação, 
-    a avaliação do modelo será feita através das métricas de MSE, RMSE e MAE.
+    st.markdown(''' O modelo de regressão linear foi escolhido por ser um 
+    modelo simples e de fácil interpretação, a avaliação do modelo será 
+    feita através das métricas de MSE, RMSE e MAE.
     ''')
 with columns[1]:
     st.image('Infnet_logo.png',width=400)
