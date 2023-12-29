@@ -19,8 +19,12 @@ st.markdown(at_lib.GetBasicTextMarkdown(25,
     problemas de qualidade.
     '''),unsafe_allow_html=True)
 
+st.cache_data(ttl=3600,max_entries=5)
 
-df_steam = pd.read_csv('SteamDatasetForStreamlitInspected.csv',engine='pyarrow')
+@st.cache_data
+def read_csv():
+	return pd.read_csv('SteamDatasetForStreamlitInspected.csv',engine='pyarrow')
+df_steam = read_csv()
 
 #df_steam.drop(df_steam[df_steam['scrap_status'] != 'Scrap_Sucess'].index,inplace=True)
 #df_steam.drop(df_steam[df_steam['type'] != 'game'].index,inplace=True)

@@ -77,7 +77,12 @@ with st.expander("Amostra do dataset original"):
 
 st.subheader('Dataset reduzido',divider = True)
 
-df_steam = pd.read_csv('SteamDatasetForStreamlit.csv',engine='pyarrow')
+st.cache_data(ttl=3600,max_entries=5)
+
+@st.cache_data
+def read_csv():
+	return pd.read_csv('SteamDatasetForStreamlit.csv',engine='pyarrow')
+df_steam = read_csv()
 
 st.dataframe(df_steam,hide_index=True,height=250)
 
