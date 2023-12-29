@@ -145,7 +145,7 @@ if calculate:
         st.metric(label=f"MAE de {num_repeats} repetições", value=f'{np.mean(np.exp(mae_scores)):.2f}')
 
 if calculate:
-    'st.subheader('Estimativa de faturamento em dólares',divider=True)
+    st.subheader('Estimativa de faturamento em dólares',divider=True)
 
     predReviews = int(np.mean(np.exp(reviews))-1)
     st.markdown(at_lib.GetBasicTextMarkdown(25,f'''Previsão de reviews: {predReviews}'''),unsafe_allow_html=True)
