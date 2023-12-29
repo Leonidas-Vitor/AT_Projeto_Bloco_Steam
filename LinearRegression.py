@@ -78,8 +78,13 @@ mae_scores = []
 
 reviews = []
 
-game_example = pd.DataFrame({'total_duration': [15], 'price': [14.99], 
-'total_supported_languages': [3], 'total_achievements': [100]})
+duration = st.number_input('Duração do jogo', min_value=1, max_value=120, value=15, step=1)
+price = st.number_input('Preço do jogo', min_value=0.9, max_value=100.0, value=14.90, step=0.10)
+languages = st.number_input('Quantidade de linguagens suportadas', min_value=1, max_value=20, value=3, step=1)
+achievements = st.number_input('Quantidade de conquistas', min_value=1, max_value=200, value=100, step=1)
+
+game_example = pd.DataFrame({'total_duration': [duration], 'price': [price], 
+'total_supported_languages': [languages], 'total_achievements': [achievements]})
 
 MinMax_scaler = MinMaxScaler()
 
