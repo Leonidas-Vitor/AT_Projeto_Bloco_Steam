@@ -191,7 +191,7 @@ if calculate:
         connector = {"line": {"color": "SteelBlue", "dash": "solid", "width": 5},"fillcolor":'white'},
     ))
 
-    st.plotly_chart(fig, use_container_width=True)'
+    st.plotly_chart(fig, use_container_width=True)
 st.subheader('Gráficos de avaliação do modelo',divider=True)
 
 if calculate:
