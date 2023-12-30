@@ -78,6 +78,12 @@ mae_scores = []
 
 reviews = []
 
+st.markdown(at_lib.GetBasicTextMarkdown(15,
+'''
+Para fazer uma previsão usando o modelo, preencha os campos abaixo com os dados do jogo que deseja \
+prever a quantidade de reviews e por conseguinte, o faturamento.
+'''),unsafe_allow_html=True)
+
 duration = st.number_input('Duração do jogo', min_value=1, max_value=120, value=15, step=1)
 price = st.number_input('Preço do jogo', min_value=0.9, max_value=100.0, value=14.90, step=0.10)
 languages = st.number_input('Quantidade de linguagens suportadas', min_value=1, max_value=20, value=3, step=1)
