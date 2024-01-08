@@ -34,7 +34,13 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
     '''),unsafe_allow_html=True)
 
-st.dataframe(df_steam,hide_index=True,height=250)
+sampleSize = 10000
+
+st.warning(f'''
+    Devido ao tamanho do dataset algumas exibições de dados foram limitadas a uma amostra de {sampleSize} linhas.
+    ''', icon="⚠️")
+
+st.dataframe(df_steam.sample(sampleSize),hide_index=True,height=250)
 
 st.divider()
 
@@ -500,7 +506,7 @@ st.markdown(at_lib.GetBasicTextMarkdown(20,
     O dataset atualmente possui {df_steam.shape[0]} linhas e {df_steam.shape[1]} colunas.
     '''),unsafe_allow_html=True)
 
-st.dataframe(df_steam,hide_index=True,height=250)
+st.dataframe(df_steam.sample(sampleSize),hide_index=True,height=250)
 
 st.table(df_steam.dtypes.astype(str))
 
