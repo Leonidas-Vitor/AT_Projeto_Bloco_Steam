@@ -9,6 +9,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import StreamlitCustomLibrary as at_lib
 import plotly.graph_objects as go
+import time
 
 at_lib.SetPageConfig()
 at_lib.SetTheme()
@@ -72,12 +73,6 @@ O modelo utilizado é o LinearRegression do sklearn e a métrica utilizada é o 
 de {num_repeats} repetições. O processo pode demorar um pouco, por favor aguarde.
 '''),unsafe_allow_html=True)
 
-mse_scores = []
-rmse_scores = []
-mae_scores = []
-
-reviews = []
-
 st.markdown(at_lib.GetBasicTextMarkdown(15,
 '''
 Para fazer uma previsão usando o modelo, preencha os campos abaixo com os dados do jogo que deseja \
@@ -92,10 +87,18 @@ achievements = st.number_input('Quantidade de conquistas', min_value=1, max_valu
 game_example = pd.DataFrame({'total_duration': [duration], 'price': [price], 
 'total_supported_languages': [languages], 'total_achievements': [achievements]})
 
-
 MinMax_scaler = MinMaxScaler()
 
-for _ in range(num_repeats):
+mse_scores = []
+rmse_scores = []
+mae_scores = []
+
+reviews = []
+
+progress_text = "Executando repetições..."
+bar = st.progress(0, text=progress_text)
+
+for r in range(num_repeats):
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3)
 
     # Aplicando o Scaler
@@ -122,6 +125,13 @@ for _ in range(num_repeats):
     mae_scores.append(mae)
 
     reviews.append(modelo_regressao.predict(game_example_scaled))
+
+    bar.progress(r/float(num_repeats), text=progress_text)
+
+time.sleep(1)
+bar.empty()
+
+#st.balloons()
 
 #with st.expander('Grupos de treino e teste escalonados'):
 #    columns = st.columns([0.5,0.5])
